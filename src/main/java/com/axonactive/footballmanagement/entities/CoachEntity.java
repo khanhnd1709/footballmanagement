@@ -1,6 +1,7 @@
 package com.axonactive.footballmanagement.entities;
 
 import com.axonactive.footballmanagement.enums.NationalityEnum;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;

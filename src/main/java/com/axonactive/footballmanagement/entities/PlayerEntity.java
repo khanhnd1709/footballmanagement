@@ -2,6 +2,8 @@ package com.axonactive.footballmanagement.entities;
 
 import com.axonactive.footballmanagement.enums.FootednessEnum;
 import com.axonactive.footballmanagement.enums.NationalityEnum;
+import com.axonactive.footballmanagement.rest.request.PlayerRequest;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,6 +23,7 @@ public class PlayerEntity {
     @NotNull
     private String name;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Past
     private LocalDate dob;
 
@@ -38,4 +41,13 @@ public class PlayerEntity {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "footedness")
     private FootednessEnum footednessEnum;
+
+    public PlayerEntity(PlayerRequest playerRequest) {
+        this.name = playerRequest.getName();
+        this.dob = playerRequest.getDob();
+        this.nationalityEnum = playerRequest.getNationality();
+        this.height = playerRequest.getHeight();
+        this.weight = playerRequest.getWeight();
+        this.footednessEnum = playerRequest.getFootedness();
+    }
 }

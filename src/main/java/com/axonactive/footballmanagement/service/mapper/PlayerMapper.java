@@ -21,4 +21,6 @@ public interface PlayerMapper {
     PlayerDto toDto(PlayForClubEntity playForClubEntity);
 
     List<PlayerDto> toDtos(List<PlayForClubEntity> players);
+
+    PlayerDto toDto(PlayerEntity playerEntity);
 }

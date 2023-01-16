@@ -1,5 +1,6 @@
 package com.axonactive.footballmanagement.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
@@ -46,5 +47,6 @@ public class MatchEntity {
     @JoinColumn(name = "stadium_id")
     private StadiumEntity stadiumEntity;
 
-    private Timestamp matchStartTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate matchStartTime;
 }

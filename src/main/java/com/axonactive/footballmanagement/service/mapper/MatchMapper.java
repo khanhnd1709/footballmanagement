@@ -7,12 +7,13 @@ import com.axonactive.footballmanagement.service.dto.PlayerDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
-@Mapper(componentModel = "cdi")
+@Mapper(componentModel = "cdi", imports = {LocalDate.class})
 public interface MatchMapper {
-    //@Mapping(target = "matchResult", expression = "java(if (matchStartTime > new LocalDate()) { \"Match has not started yet\" } else { numberGoalClub1 + \" - \" numberGoalClub2 }")
-    //@Mapping(target = "startMatchTime", expression = "java(matchStartTime.toLocalDateTime())")
+    @Mapping(target = "matchResult", expression = "java((matchEntity.getMatchStartTime().isAfter(LocalDate.now()))?\"Match has not started yet\":matchEntity.getNumberGoalClub1() + \" - \" + matchEntity.getNumberGoalClub2())")
     @Mapping(source = "club1Entity.name", target = "club1Name")
     @Mapping(source = "club2Entity.name", target = "club2Name")
     @Mapping(source = "leagueEntity.name", target = "leagueName")

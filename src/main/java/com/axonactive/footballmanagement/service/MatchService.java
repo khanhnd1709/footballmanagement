@@ -21,6 +21,9 @@ public class MatchService {
     @Inject
     private MatchMapper matchMapper;
 
+    public MatchService() {
+    }
+
     public List<MatchDto> getMatchesByDate(String fromDate, String toDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate fromLocalDate = LocalDate.parse(fromDate, formatter);

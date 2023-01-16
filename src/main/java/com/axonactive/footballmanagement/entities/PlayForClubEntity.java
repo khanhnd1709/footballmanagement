@@ -1,6 +1,8 @@
 package com.axonactive.footballmanagement.entities;
 
 import com.axonactive.footballmanagement.enums.PositionEnum;
+import com.axonactive.footballmanagement.rest.request.PlayerRequest;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.mapping.ToOne;
 
@@ -42,13 +44,13 @@ public class PlayForClubEntity {
     @Column(name = "position")
     private PositionEnum positionEnum;
 
-    @Column(name = "start_date")
     @PastOrPresent
     private LocalDate startDate;
 
     @PastOrPresent
     private LocalDate endDate;
 
-    
+    @Column(columnDefinition = "boolean default TRUE")
     private Boolean isActive;
+
 }

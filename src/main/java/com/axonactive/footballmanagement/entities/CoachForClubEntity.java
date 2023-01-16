@@ -1,5 +1,6 @@
 package com.axonactive.footballmanagement.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,7 +33,6 @@ public class CoachForClubEntity {
     @PositiveOrZero
     private Long salary;
 
-    @Column(name = "start_date")
     @PastOrPresent
     private LocalDate startDate;
 

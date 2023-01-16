@@ -8,6 +8,5 @@ import java.util.List;
 
 @Stateless
 public interface MatchDao {
-
     List<MatchEntity> getMatchesByDate(LocalDate fromDate, LocalDate toDate);
 }

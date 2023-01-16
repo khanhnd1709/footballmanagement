@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,5 +16,5 @@ public class MatchDto {
     private String club1Name;
     private String club2Name;
     private String matchResult;
-    private LocalDateTime startMatchTime;
+    private LocalDate matchStartTime;
 }
