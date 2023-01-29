@@ -13,7 +13,7 @@ import java.util.List;
 @Stateless
 @Path(GameResource.PATH)
 public class GameResource {
-    public static final String PATH = "matches";
+    public static final String PATH = "games";
 
     @Inject
     private GameService gameService;
@@ -21,7 +21,7 @@ public class GameResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response getMatchesByDate(@QueryParam("fromDate") String fromDate, @QueryParam("toDate") String toDate) {
-        List<GameDto> matches = gameService.getMatchesByDate(fromDate, toDate);
-        return Response.ok().entity(matches).build();
+        List<GameDto> games = gameService.getMatchesByDate(fromDate, toDate);
+        return Response.ok().entity(games).build();
     }
 }

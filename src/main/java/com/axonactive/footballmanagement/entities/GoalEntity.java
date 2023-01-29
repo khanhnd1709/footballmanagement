@@ -2,6 +2,7 @@ package com.axonactive.footballmanagement.entities;
 
 import com.axonactive.footballmanagement.enums.GoalTypeEnum;
 import com.axonactive.footballmanagement.entities.GameTime;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import org.hibernate.annotations.Parent;
 
@@ -22,6 +23,7 @@ public class GoalEntity {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "game_id")
+    @JsonBackReference
     private GameEntity game;
 
     @NotNull

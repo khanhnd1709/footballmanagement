@@ -19,9 +19,6 @@ public class GameService {
     @Inject
     private GameMapper gameMapper;
 
-    public GameService() {
-    }
-
     public List<GameDto> getMatchesByDate(String fromDate, String toDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate fromLocalDate = LocalDate.parse(fromDate, formatter);

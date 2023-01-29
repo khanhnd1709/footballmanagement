@@ -1,6 +1,7 @@
 package com.axonactive.footballmanagement.entities;
 
 import com.axonactive.footballmanagement.enums.NationalityEnum;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -44,6 +45,7 @@ public class LeagueEntity {
     private List<LeagueParticipatedEntity> teams;
 
     @OneToMany(mappedBy = "league")
+    @JsonManagedReference
     private List<GameEntity> games;
 
     @PastOrPresent

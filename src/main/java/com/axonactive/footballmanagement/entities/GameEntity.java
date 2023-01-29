@@ -1,6 +1,10 @@
 package com.axonactive.footballmanagement.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,6 +15,8 @@ import java.util.List;
 @Entity
 @Table(name = "game")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class GameEntity {
 
     @Id
@@ -28,9 +34,11 @@ public class GameEntity {
     private TeamEntity away;
 
     @OneToMany(mappedBy = "game")
+    @JsonManagedReference
     private List<GamePlayedEntity> players;
 
     @OneToMany(mappedBy = "game")
+    @JsonManagedReference
     private List<GoalEntity> goals;
 
     @ManyToOne
@@ -42,6 +50,7 @@ public class GameEntity {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "league_id")
+    @JsonBackReference
     private LeagueEntity league;
 
 }

@@ -17,10 +17,10 @@ public class GameDaoImpl implements GameDao {
 
     @Override
     public List<GameEntity> getMatchesByDate(LocalDate fromDate, LocalDate toDate) {
-        return em.createQuery("SELECT g FROM GameEntity g WHERE g.matchStartTime>=:fromDateTime" +
-                        " AND m.matchStartTime<=:toDateTime", GameEntity.class)
-                .setParameter("fromDateTime", fromDate)
-                .setParameter("toDateTime", toDate)
+        return em.createQuery("SELECT g FROM GameEntity g WHERE g.dateTimeOfGame.toLocalDate()>=:fromDate" +
+                        " AND m.dateTimeOfGame.toLocalDate()<=:toDate ORDER BY g.dateTimeOfGame", GameEntity.class)
+                .setParameter("fromDate", fromDate)
+                .setParameter("toDate", toDate)
                 .getResultList();
     }
 }

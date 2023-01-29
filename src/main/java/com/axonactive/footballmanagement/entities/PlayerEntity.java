@@ -9,8 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "player")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlayerEntity extends PersonEntity {
