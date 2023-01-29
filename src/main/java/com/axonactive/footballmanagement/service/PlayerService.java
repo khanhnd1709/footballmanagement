@@ -1,9 +1,11 @@
 package com.axonactive.footballmanagement.service;
 
 import com.axonactive.footballmanagement.dao.PlayerDao;
-import com.axonactive.footballmanagement.entities.PlayForClubEntity;
+import com.axonactive.footballmanagement.dao.TeamDao;
 import com.axonactive.footballmanagement.entities.PlayerEntity;
-import com.axonactive.footballmanagement.rest.exception.AddingException;
+import com.axonactive.footballmanagement.entities.TeamEntity;
+import com.axonactive.footballmanagement.entities.TeamPlayedEntity;
+import com.axonactive.footballmanagement.rest.exception.CustomException;
 import com.axonactive.footballmanagement.rest.exception.errormessages.ErrorConstant;
 import com.axonactive.footballmanagement.rest.request.PlayerRequest;
 import com.axonactive.footballmanagement.service.dto.PlayerDto;
@@ -11,11 +13,9 @@ import com.axonactive.footballmanagement.service.mapper.PlayerMapper;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Stateless
 public class PlayerService {
@@ -24,27 +24,52 @@ public class PlayerService {
     private PlayerDao playerDao;
 
     @Inject
+    private TeamDao teamDao;
+
+    @Inject
     private PlayerMapper playerMapper;
 
     public PlayerDto getPlayerById(Long id) {
-        return playerMapper.toDto(playerDao.getPlayerById(id));
+        TeamPlayedEntity currentTeamPlayed = playerDao.getCurrentTeamPlayedByPlayerId(id);
+        if (currentTeamPlayed != null) {
+            return playerMapper.toDto(currentTeamPlayed);
+        }
+
+        PlayerEntity player = playerDao.getPlayerById(id);
+        if (player == null) {
+            throw new CustomException(ErrorConstant.MSG_PLAYER_NOT_FOUND, Response.Status.NOT_FOUND);
+        }
+        return playerMapper.toDto(player);
     }
 
     public List<PlayerDto> getAllPlayers() {
-        return playerMapper.toDtos(playerDao.getAllPlayers());
+        List<PlayerEntity> players = playerDao.getAllPlayers();
+        return players.stream()
+                .map(player -> {
+                    TeamPlayedEntity currentTeamPlayed = playerDao.getCurrentTeamPlayedByPlayerId(player.getId());
+                    if (currentTeamPlayed != null) {
+                        return playerMapper.toDto(currentTeamPlayed);
+                    }
+                    return playerMapper.toDto(player);
+                })
+                .collect(Collectors.toList());
     }
 
-    public List<PlayerDto> getAllPlayersByClubId(Long clubId) {
-        return playerMapper.toDtos(playerDao.getAllPlayersByClubId(clubId));
+    public List<PlayerDto> getCurrentActivePlayersByTeamId(Long id) {
+        TeamEntity team = teamDao.getTeamById(id);
+        if (team == null) {
+            throw new CustomException(ErrorConstant.MSG_TEAM_NOT_FOUND, Response.Status.NOT_FOUND);
+        }
+        return playerMapper.toDtos(team.getAllPlayers());
     }
-    @Transactional(rollbackOn = Exception.class)
-    public List<PlayerDto> addPlayers(List<PlayerRequest> playerRequests) {
-        List<PlayerDto> playerToResponse = new ArrayList<>();
-        validateGeneralAddRequest(playerRequests);
-        playerRequests.forEach(playerRequest ->
-                playerToResponse.add(playerMapper.toDto(playerDao.addPlayer(playerRequest))));
-        return playerToResponse;
-    }
+//    @Transactional(rollbackOn = Exception.class)
+//    public List<PlayerDto> addPlayers(List<PlayerRequest> playerRequests) {
+//        List<PlayerDto> playerToResponse = new ArrayList<>();
+//        validateGeneralAddRequest(playerRequests);
+//        playerRequests.forEach(playerRequest ->
+//                playerToResponse.add(playerMapper.toDto(playerDao.addPlayer(playerRequest))));
+//        return playerToResponse;
+//    }
 
     public void validateGeneralAddRequest(List<?> objects) {
         isRequestEmpty(objects);
@@ -52,7 +77,7 @@ public class PlayerService {
 
     private void isRequestEmpty(List<?> objects) {
         if (objects.isEmpty()) {
-            throw new AddingException(ErrorConstant.MSG_REQUEST_EMPTY, Response.Status.BAD_REQUEST);
+            throw new CustomException(ErrorConstant.MSG_REQUEST_EMPTY, Response.Status.BAD_REQUEST);
         }
     }
 

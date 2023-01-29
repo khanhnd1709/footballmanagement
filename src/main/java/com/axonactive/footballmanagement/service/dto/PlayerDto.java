@@ -14,15 +14,17 @@ import java.time.LocalDate;
 public class PlayerDto {
     private Long id;
     private String name;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dob;
     private Integer height;
     private Integer weight;
     private FootednessEnum footedness;
     private NationalityEnum nationality;
-    private String clubName;
+    private String team;
     private Integer numberShirt;
     private Long salary;
-    private Long transferValue;
-    private PositionEnum positionEnum;
+    private Long transferFee;
+    private PositionEnum position;
+    private LocalDate attendDate;
+    private LocalDate leaveDate;
+    private Boolean isActive;
 }

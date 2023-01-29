@@ -1,53 +1,29 @@
 package com.axonactive.footballmanagement.entities;
 
 import com.axonactive.footballmanagement.enums.FootednessEnum;
-import com.axonactive.footballmanagement.enums.NationalityEnum;
-import com.axonactive.footballmanagement.rest.request.PlayerRequest;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "player")
-@Data
-public class PlayerEntity {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class PlayerEntity extends PersonEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 50)
-    @Column(length = 50, nullable = false)
-    @NotNull
-    private String name;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @Past
-    private LocalDate dob;
-
-    @Size(max = 50)
-    @Column(length = 50, name = "nationality")
     @Enumerated(value = EnumType.STRING)
-    private NationalityEnum nationalityEnum;
+    private FootednessEnum footedness;
 
-    @Positive
-    private Integer height;
+    @OneToMany(mappedBy = "player")
+    @JsonManagedReference
+    private List<TeamPlayedEntity> teams;
 
-    @Positive
-    private Integer weight;
-
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "footedness")
-    private FootednessEnum footednessEnum;
-
-    public PlayerEntity(PlayerRequest playerRequest) {
-        this.name = playerRequest.getName();
-        this.dob = playerRequest.getDob();
-        this.nationalityEnum = playerRequest.getNationality();
-        this.height = playerRequest.getHeight();
-        this.weight = playerRequest.getWeight();
-        this.footednessEnum = playerRequest.getFootedness();
-    }
 }

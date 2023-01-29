@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Stateless
-@Path("")
+@Path(PlayerResource.PATH)
 @Produces({MediaType.APPLICATION_JSON})
 public class PlayerResource {
     public static final String PATH = "players";
@@ -24,33 +24,25 @@ public class PlayerResource {
     private PlayerService playerService;
 
     @GET
-    @Path(PATH + "/{playerId}")
-    public Response getPlayerById(@PathParam("playerId") Long playerId) {
-        PlayerDto player = playerService.getPlayerById(playerId);
-        return Response.ok().entity(player).build();
-    }
-
-    @GET
-    @Path(PATH)
     public Response getAllPlayers() {
         List<PlayerDto> players = playerService.getAllPlayers();
         return Response.ok().entity(players).build();
     }
 
     @GET
-    @Path("clubs/{clubId}/" + PATH)
-    public Response getAllPlayersByClubId(@PathParam("clubId") Long clubId) {
-        List<PlayerDto> players = playerService.getAllPlayersByClubId(clubId);
-        return Response.ok().entity(players).build();
+    @Path("{playerId}")
+    public Response getPlayerById(@PathParam("playerId") Long playerId) {
+        PlayerDto player = playerService.getPlayerById(playerId);
+        return Response.ok().entity(player).build();
     }
 
-    @POST
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response addPlayers(@Valid List<PlayerRequest> playerRequests) {
-        try {
-            return Response.ok().entity(playerService.addPlayers(playerRequests)).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-        }
-    }
+//    @POST
+//    @Consumes({MediaType.APPLICATION_JSON})
+//    public Response addPlayers(@Valid List<PlayerRequest> playerRequests) {
+//        try {
+//            return Response.ok().entity(playerService.addPlayers(playerRequests)).build();
+//        } catch (Exception e) {
+//            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+//        }
+//    }
 }

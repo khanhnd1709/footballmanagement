@@ -1,10 +1,8 @@
 package com.axonactive.footballmanagement.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.PositiveOrZero;
@@ -12,9 +10,10 @@ import java.time.LocalDate;
 
 
 @Entity
-@Table(name = "coach_for_club")
+@Table(name = "team_coached",
+        uniqueConstraints= @UniqueConstraint(columnNames={"coach_id", "team_id"}))
 @Data
-public class CoachForClubEntity {
+public class TeamCoachedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,19 +22,19 @@ public class CoachForClubEntity {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "coach_id")
-    private CoachEntity coachEntity;
+    private CoachEntity coach;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "club_id")
-    private ClubEntity clubEntity;
+    @JoinColumn(name = "team_id")
+    private TeamEntity team;
 
     @PositiveOrZero
     private Long salary;
 
     @PastOrPresent
-    private LocalDate startDate;
+    private LocalDate attendDate;
 
     @PastOrPresent
-    private LocalDate endDate;
+    private LocalDate leaveDate;
 }

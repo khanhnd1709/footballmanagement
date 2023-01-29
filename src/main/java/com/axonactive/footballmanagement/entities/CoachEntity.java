@@ -1,34 +1,28 @@
 package com.axonactive.footballmanagement.entities;
 
-import com.axonactive.footballmanagement.enums.NationalityEnum;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.axonactive.footballmanagement.enums.AccrLevelEnum;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
-import java.time.LocalDate;
+import javax.validation.constraints.PositiveOrZero;
+import java.util.List;
 
 @Entity
 @Table(name = "coach")
 @Data
-public class CoachEntity {
+public class CoachEntity extends PersonEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 50)
-    @Column(length = 50, nullable = false)
-    @NotNull
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private AccrLevelEnum accrLevel;
 
-    @Past
-    private LocalDate dob;
+    @PositiveOrZero
+    private Integer experience;
 
-    @Size(max = 50)
-    @Column(length = 50, name = "nationality")
-    @Enumerated(value = EnumType.STRING)
-    private NationalityEnum nationalityEnum;
+    @OneToMany(mappedBy = "coach")
+    private List<TeamCoachedEntity> teams;
 }

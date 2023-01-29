@@ -1,46 +1,72 @@
 package com.axonactive.footballmanagement.dao.impl;
 
 import com.axonactive.footballmanagement.dao.PlayerDao;
-import com.axonactive.footballmanagement.entities.PlayForClubEntity;
+import com.axonactive.footballmanagement.entities.TeamPlayedEntity;
 import com.axonactive.footballmanagement.entities.PlayerEntity;
 import com.axonactive.footballmanagement.rest.request.PlayerRequest;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Stateless
 public class PlayerDaoImpl implements PlayerDao {
-
     @PersistenceContext(unitName = "football")
     EntityManager em;
 
     @Override
-    public PlayForClubEntity getPlayerById(Long id) {
-        return em.createQuery("SELECT pfc FROM PlayForClubEntity pfc WHERE pfc.playerEntity.id=:id" +
-                        " AND pfc.isActive=TRUE", PlayForClubEntity.class)
+    public PlayerEntity getPlayerById(Long id) {
+        try {
+            return em.find(PlayerEntity.class, id);
+        }
+        catch (NoResultException noResultException) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<PlayerEntity> getAllPlayers() {
+        return em.createQuery("SELECT p FROM PlayerEntity p", PlayerEntity.class)
+                .getResultList();
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     * Các trường hợp return:
+     * - Null khi cầu thủ đang trong trạng thái tự do (không tồn tại leaveDate = null)
+     * - Null khi cầu thủ chưa từng nằm trong bất kỳ clb nào (không tồn tại leaveDate = null)
+     * - Trả về cầu thủ đang chơi ở câu lạc bộ hiện tại
+     *
+     */
+    @Override
+    public TeamPlayedEntity getCurrentTeamPlayedByPlayerId(Long id) {
+        try {
+            return em.createQuery("SELECT tp FROM TeamPlayedEntity tp WHERE tp.player.id=:id" +
+                                    " AND tp.leaveDate IS NULL",
+                            TeamPlayedEntity.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        }
+        catch (NoResultException noResultException) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<TeamPlayedEntity> getAllPlayersByTeamId(Long id) {
+        return em.createQuery("SELECT tp FROM TeamPlayedEntity tp WHERE tp.team.id=:id",
+                        TeamPlayedEntity.class)
                 .setParameter("id", id)
-                .getSingleResult();
-    }
-
-    @Override
-    public List<PlayForClubEntity> getAllPlayers() {
-        return em.createQuery("SELECT pfc FROM PlayForClubEntity pfc WHERE pfc.isActive=TRUE", PlayForClubEntity.class)
                 .getResultList();
     }
-
-    @Override
-    public List<PlayForClubEntity> getAllPlayersByClubId(Long clubId) {
-        return em.createQuery("SELECT pfc FROM PlayForClubEntity pfc WHERE pfc.clubEntity.id=:clubId AND pfc.isActive=TRUE",
-                        PlayForClubEntity.class)
-                .setParameter("clubId", clubId)
-                .getResultList();
-    }
-
-    @Override
-    public PlayerEntity addPlayer(PlayerRequest playerRequest) {
-        PlayerEntity playerEntity = new PlayerEntity(playerRequest);
-        return em.merge(playerEntity);
-    }
+//
+//    @Override
+//    public PlayerEntity addPlayer(PlayerRequest playerRequest) {
+//        PlayerEntity playerEntity = new PlayerEntity(playerRequest);
+//        return em.merge(playerEntity);
+//    }
 }

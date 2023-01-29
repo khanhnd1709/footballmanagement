@@ -1,4 +1,4 @@
 package com.axonactive.footballmanagement.service.dto;
 
-public class ClubDto {
+public class TeamDto {
 }

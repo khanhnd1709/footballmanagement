@@ -1,41 +1,47 @@
 package com.axonactive.footballmanagement.entities;
 
-import com.axonactive.footballmanagement.enums.StyleEnum;
-import lombok.*;
+import com.axonactive.footballmanagement.enums.GoalTypeEnum;
+import com.axonactive.footballmanagement.entities.GameTime;
+import lombok.Data;
+import org.hibernate.annotations.Parent;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.time.LocalTime;
+import javax.validation.constraints.PositiveOrZero;
 
 @Entity
 @Table(name = "goal")
 @Data
 public class GoalEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "match_id")
     @NotNull
-    private MatchEntity matchEntity;
+    @ManyToOne
+    @JoinColumn(name = "game_id")
+    private GameEntity game;
 
-    @ManyToOne
-    @JoinColumn(name = "player_score_id")
     @NotNull
-    private PlayerEntity playerScoreEntity;
+    @ManyToOne
+    @JoinColumn(name = "score_player_id")
+    private PlayerEntity scorePlayer;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "style")
-    private StyleEnum styleEnum;
+    private GoalTypeEnum goalType;
 
     @ManyToOne
-    @JoinColumn(name = "player_assist_id")
-    private PlayerEntity playerAssistEntity;
+    @JoinColumn(name = "assist_player_id")
+    private PlayerEntity assistPlayer;
 
-    @Min(value = 0)
-    @Max(value = 120)
-    private Integer time;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private TeamEntity team;
+
+    @NotNull
+    private GameTime timeOfGoal;
+
 }

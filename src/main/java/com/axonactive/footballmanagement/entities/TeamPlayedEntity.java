@@ -1,10 +1,8 @@
 package com.axonactive.footballmanagement.entities;
 
 import com.axonactive.footballmanagement.enums.PositionEnum;
-import com.axonactive.footballmanagement.rest.request.PlayerRequest;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
-import org.hibernate.mapping.ToOne;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -14,43 +12,46 @@ import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "play_for_club")
+@Table(name = "team_played",
+        uniqueConstraints= @UniqueConstraint(columnNames={"player_id", "team_id"}))
 @Data
-public class PlayForClubEntity {
+@AllArgsConstructor
+@NoArgsConstructor
+public class TeamPlayedEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "player_id")
-    private PlayerEntity playerEntity;
+    @JsonBackReference
+    private PlayerEntity player;
 
     @ManyToOne
-    @JoinColumn(name = "club_id")
-    private ClubEntity clubEntity;
+    @JoinColumn(name = "team_id")
+    @JsonBackReference
+    private TeamEntity team;
 
-    @Min(value = 0)
-    @Max(value = 99)
-    @Column(name = "number_shirt")
+    @Max(99)
+    @PositiveOrZero
     private Integer numberShirt;
 
     @PositiveOrZero
     private Long salary;
 
     @PositiveOrZero
-    private Long transferValue;
+    private Long transferFee;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "position")
-    private PositionEnum positionEnum;
+    private PositionEnum position;
 
     @PastOrPresent
-    private LocalDate startDate;
+    private LocalDate attendDate;
 
     @PastOrPresent
-    private LocalDate endDate;
+    private LocalDate leaveDate;
 
-    @Column(columnDefinition = "boolean default TRUE")
+    @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean isActive;
-
 }
