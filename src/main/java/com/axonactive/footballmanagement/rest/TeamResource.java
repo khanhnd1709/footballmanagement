@@ -1,5 +1,6 @@
 package com.axonactive.footballmanagement.rest;
 
+import com.axonactive.footballmanagement.rest.exception.CustomException;
 import com.axonactive.footballmanagement.service.PlayerService;
 import com.axonactive.footballmanagement.service.dto.PlayerDto;
 
@@ -26,7 +27,15 @@ public class TeamResource {
     @GET
     @Path("{id}/" + PlayerResource.PATH)
     public Response getCurrentActivePlayersByTeamId(@PathParam("id") Long id) {
-        List<PlayerDto> players = playerService.getCurrentActivePlayersByTeamId(id);
-        return Response.ok().entity(players).build();
+        try {
+            List<PlayerDto> players = playerService.getCurrentActivePlayersByTeamId(id);
+            return Response.ok().entity(players).build();
+        }
+        catch (CustomException exception) {
+            return Response.status(exception.getResponse().getStatus())
+                    .entity(exception.getMessage())
+                    .type(MediaType.TEXT_PLAIN)
+                    .build();
+        }
     }
 }

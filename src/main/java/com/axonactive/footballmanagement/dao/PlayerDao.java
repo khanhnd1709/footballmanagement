@@ -12,7 +12,6 @@ public interface PlayerDao {
     PlayerEntity getPlayerById(Long id);
     List<PlayerEntity> getAllPlayers();
     TeamPlayedEntity getCurrentTeamPlayedByPlayerId(Long id);
-    List<TeamPlayedEntity> getAllPlayersByTeamId(Long id);
 
-//    PlayerEntity addPlayer(PlayerRequest playerRequest);
+    PlayerEntity createPlayer(PlayerEntity player);
 }

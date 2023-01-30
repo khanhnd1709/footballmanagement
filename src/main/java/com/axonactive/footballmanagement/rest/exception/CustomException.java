@@ -9,8 +9,7 @@ import javax.ws.rs.core.Response;
 public class CustomException extends WebApplicationException {
 
     public CustomException(String message, Response.Status status) {
-        super(Response.status(status).entity(message)
-                .type(MediaType.TEXT_PLAIN).build());
+        super(message, status);
     }
 
 }

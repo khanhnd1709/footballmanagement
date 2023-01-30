@@ -1,6 +1,7 @@
 package com.axonactive.footballmanagement.rest;
 
 import com.axonactive.footballmanagement.entities.PlayerEntity;
+import com.axonactive.footballmanagement.rest.exception.CustomException;
 import com.axonactive.footballmanagement.rest.request.PlayerRequest;
 import com.axonactive.footballmanagement.service.PlayerService;
 import com.axonactive.footballmanagement.service.dto.PlayerDto;
@@ -30,10 +31,33 @@ public class PlayerResource {
     }
 
     @GET
-    @Path("{playerId}")
-    public Response getPlayerById(@PathParam("playerId") Long playerId) {
-        PlayerDto player = playerService.getPlayerById(playerId);
-        return Response.ok().entity(player).build();
+    @Path("{id}")
+    public Response getPlayerById(@PathParam("id") Long id) {
+        try {
+            PlayerDto player = playerService.getPlayerDtoById(id);
+            return Response.ok().entity(player).build();
+        }
+        catch (CustomException exception) {
+            return Response.status(exception.getResponse().getStatus())
+                    .entity(exception.getMessage())
+                    .type(MediaType.TEXT_PLAIN)
+                    .build();
+        }
+    }
+
+    @Consumes({MediaType.APPLICATION_JSON})
+    @POST
+    public Response createPlayer(@Valid PlayerEntity player) {
+        try {
+            return Response.status(Response.Status.CREATED)
+                    .entity(playerService.createPlayer(player)).build();
+        }
+        catch (CustomException exception) {
+            return Response.status(exception.getResponse().getStatus())
+                    .entity(exception.getMessage())
+                    .type(MediaType.TEXT_PLAIN)
+                    .build();
+        }
     }
 
 //    @POST

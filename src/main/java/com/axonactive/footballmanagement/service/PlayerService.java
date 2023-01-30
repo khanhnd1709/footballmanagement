@@ -13,7 +13,9 @@ import com.axonactive.footballmanagement.service.mapper.PlayerMapper;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,13 +31,13 @@ public class PlayerService {
     @Inject
     private PlayerMapper playerMapper;
 
-    public PlayerDto getPlayerById(Long id) {
-        TeamPlayedEntity currentTeamPlayed = playerDao.getCurrentTeamPlayedByPlayerId(id);
+    public PlayerDto getPlayerDtoById(Long id) {
+        TeamPlayedEntity currentTeamPlayed = getCurrentTeamPlayedByPlayerId(id);
         if (currentTeamPlayed != null) {
             return playerMapper.toDto(currentTeamPlayed);
         }
 
-        PlayerEntity player = playerDao.getPlayerById(id);
+        PlayerEntity player = getPlayerById(id);
         if (player == null) {
             throw new CustomException(ErrorConstant.MSG_PLAYER_NOT_FOUND, Response.Status.NOT_FOUND);
         }
@@ -46,13 +48,31 @@ public class PlayerService {
         List<PlayerEntity> players = playerDao.getAllPlayers();
         return players.stream()
                 .map(player -> {
-                    TeamPlayedEntity currentTeamPlayed = playerDao.getCurrentTeamPlayedByPlayerId(player.getId());
+                    TeamPlayedEntity currentTeamPlayed = getCurrentTeamPlayedByPlayerId(player.getId());
                     if (currentTeamPlayed != null) {
                         return playerMapper.toDto(currentTeamPlayed);
                     }
                     return playerMapper.toDto(player);
                 })
                 .collect(Collectors.toList());
+    }
+
+    public TeamPlayedEntity getCurrentTeamPlayedByPlayerId(Long id) {
+        try {
+            return playerDao.getCurrentTeamPlayedByPlayerId(id);
+        }
+        catch (NoResultException noResultException) {
+            return null;
+        }
+    }
+
+    public PlayerEntity getPlayerById(Long id) {
+        try {
+            return playerDao.getPlayerById(id);
+        }
+        catch (NoResultException noResultException) {
+            return null;
+        }
     }
 
     public List<PlayerDto> getCurrentActivePlayersByTeamId(Long id) {
@@ -64,14 +84,10 @@ public class PlayerService {
                 .filter(TeamPlayedEntity::getIsActive)
                 .collect(Collectors.toList()));
     }
-//    @Transactional(rollbackOn = Exception.class)
-//    public List<PlayerDto> addPlayers(List<PlayerRequest> playerRequests) {
-//        List<PlayerDto> playerToResponse = new ArrayList<>();
-//        validateGeneralAddRequest(playerRequests);
-//        playerRequests.forEach(playerRequest ->
-//                playerToResponse.add(playerMapper.toDto(playerDao.addPlayer(playerRequest))));
-//        return playerToResponse;
-//    }
+
+    public PlayerDto createPlayer(PlayerEntity player) {
+        return playerMapper.toDto(playerDao.createPlayer(player));
+    }
 
     public void validateGeneralAddRequest(List<?> objects) {
         isRequestEmpty(objects);

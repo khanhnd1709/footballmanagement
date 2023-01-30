@@ -18,12 +18,7 @@ public class PlayerDaoImpl implements PlayerDao {
 
     @Override
     public PlayerEntity getPlayerById(Long id) {
-        try {
-            return em.find(PlayerEntity.class, id);
-        }
-        catch (NoResultException noResultException) {
-            return null;
-        }
+        return em.find(PlayerEntity.class, id);
     }
 
     @Override
@@ -44,29 +39,15 @@ public class PlayerDaoImpl implements PlayerDao {
      */
     @Override
     public TeamPlayedEntity getCurrentTeamPlayedByPlayerId(Long id) {
-        try {
-            return em.createQuery("SELECT tp FROM TeamPlayedEntity tp WHERE tp.player.id=:id" +
-                                    " AND tp.leaveDate IS NULL",
-                            TeamPlayedEntity.class)
-                    .setParameter("id", id)
-                    .getSingleResult();
-        }
-        catch (NoResultException noResultException) {
-            return null;
-        }
+        return em.createQuery("SELECT tp FROM TeamPlayedEntity tp WHERE tp.player.id=:id" +
+                                " AND tp.leaveDate IS NULL",
+                        TeamPlayedEntity.class)
+                .setParameter("id", id)
+                .getSingleResult();
     }
 
     @Override
-    public List<TeamPlayedEntity> getAllPlayersByTeamId(Long id) {
-        return em.createQuery("SELECT tp FROM TeamPlayedEntity tp WHERE tp.team.id=:id",
-                        TeamPlayedEntity.class)
-                .setParameter("id", id)
-                .getResultList();
+    public PlayerEntity createPlayer(PlayerEntity player) {
+        return em.merge(player);
     }
-//
-//    @Override
-//    public PlayerEntity addPlayer(PlayerRequest playerRequest) {
-//        PlayerEntity playerEntity = new PlayerEntity(playerRequest);
-//        return em.merge(playerEntity);
-//    }
 }
