@@ -60,7 +60,9 @@ public class PlayerService {
         if (team == null) {
             throw new CustomException(ErrorConstant.MSG_TEAM_NOT_FOUND, Response.Status.NOT_FOUND);
         }
-        return playerMapper.toDtos(team.getAllPlayers());
+        return playerMapper.toDtos(team.getAllPlayers().stream()
+                .filter(TeamPlayedEntity::getIsActive)
+                .collect(Collectors.toList()));
     }
 //    @Transactional(rollbackOn = Exception.class)
 //    public List<PlayerDto> addPlayers(List<PlayerRequest> playerRequests) {

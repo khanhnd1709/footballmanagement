@@ -1,5 +1,6 @@
 package com.axonactive.footballmanagement.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,8 +11,7 @@ import java.time.LocalDate;
 
 
 @Entity
-@Table(name = "team_coached",
-        uniqueConstraints= @UniqueConstraint(columnNames={"coach_id", "team_id"}))
+@Table(name = "team_coached")
 @Data
 public class TeamCoachedEntity {
 

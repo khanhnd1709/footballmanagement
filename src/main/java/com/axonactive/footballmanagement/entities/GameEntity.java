@@ -34,11 +34,9 @@ public class GameEntity {
     private TeamEntity away;
 
     @OneToMany(mappedBy = "game")
-    @JsonManagedReference
     private List<GamePlayedEntity> players;
 
     @OneToMany(mappedBy = "game")
-    @JsonManagedReference
     private List<GoalEntity> goals;
 
     @ManyToOne
@@ -50,7 +48,6 @@ public class GameEntity {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "league_id")
-    @JsonBackReference
     private LeagueEntity league;
 
 }

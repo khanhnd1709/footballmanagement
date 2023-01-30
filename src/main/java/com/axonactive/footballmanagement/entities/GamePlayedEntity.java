@@ -23,7 +23,6 @@ public class GamePlayedEntity {
 
     @ManyToOne
     @JoinColumn(name = "game_id")
-    @JsonBackReference
     private GameEntity game;
 
     @PositiveOrZero

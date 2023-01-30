@@ -8,6 +8,8 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Stateless
@@ -21,7 +23,10 @@ public class GameResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response getMatchesByDate(@QueryParam("fromDate") String fromDate, @QueryParam("toDate") String toDate) {
-        List<GameDto> games = gameService.getMatchesByDate(fromDate, toDate);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate fromLocalDate = LocalDate.parse(fromDate, formatter);
+        LocalDate toLocalDate = LocalDate.parse(toDate, formatter);
+        List<GameDto> games = gameService.getMatchesByDate(fromLocalDate, toLocalDate);
         return Response.ok().entity(games).build();
     }
 }

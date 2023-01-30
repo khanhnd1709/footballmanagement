@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -37,15 +34,21 @@ public class LeagueEntity {
     @Column(columnDefinition = "integer default 2")
     private Integer numberOfTeams;
 
+    @Min(value = 30)
+    @Column(columnDefinition = "integer default 30")
+    private Integer maxPLayerEachTeam;
+
     @Min(value = 20)
     @Column(columnDefinition = "integer default 20")
-    private Integer maxPLayerEachTeam;
+    private Integer maxPLayerOneTeamEachGame;
+
+    @PositiveOrZero
+    private Integer maxNumberOfSubstituteEachGame;
 
     @OneToMany(mappedBy = "league")
     private List<LeagueParticipatedEntity> teams;
 
     @OneToMany(mappedBy = "league")
-    @JsonManagedReference
     private List<GameEntity> games;
 
     @PastOrPresent

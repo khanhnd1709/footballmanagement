@@ -23,7 +23,6 @@ public class GoalEntity {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "game_id")
-    @JsonBackReference
     private GameEntity game;
 
     @NotNull

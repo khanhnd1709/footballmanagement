@@ -8,12 +8,12 @@ import org.hibernate.mapping.ToOne;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "team")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class TeamEntity {
@@ -32,6 +32,5 @@ public class TeamEntity {
     private StadiumEntity stadium;
 
     @OneToMany(mappedBy = "team")
-    @JsonManagedReference
     private List<TeamPlayedEntity> allPlayers;
 }

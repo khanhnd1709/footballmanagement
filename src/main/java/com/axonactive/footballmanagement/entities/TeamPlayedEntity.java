@@ -12,8 +12,7 @@ import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "team_played",
-        uniqueConstraints= @UniqueConstraint(columnNames={"player_id", "team_id"}))
+@Table(name = "team_played")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,12 +24,10 @@ public class TeamPlayedEntity {
 
     @ManyToOne
     @JoinColumn(name = "player_id")
-    @JsonBackReference
     private PlayerEntity player;
 
     @ManyToOne
     @JoinColumn(name = "team_id")
-    @JsonBackReference
     private TeamEntity team;
 
     @Max(99)

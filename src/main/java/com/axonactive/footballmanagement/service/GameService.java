@@ -8,6 +8,8 @@ import com.axonactive.footballmanagement.service.mapper.GameMapper;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -19,10 +21,9 @@ public class GameService {
     @Inject
     private GameMapper gameMapper;
 
-    public List<GameDto> getMatchesByDate(String fromDate, String toDate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate fromLocalDate = LocalDate.parse(fromDate, formatter);
-        LocalDate toLocalDate = LocalDate.parse(toDate, formatter);
-        return gameMapper.toDtos(gameDao.getMatchesByDate(fromLocalDate, toLocalDate));
+    public List<GameDto> getMatchesByDate(LocalDate fromLocalDate, LocalDate toLocalDate) {
+        LocalDateTime fromLocalDateTime = LocalDateTime.of(LocalDate.from(fromLocalDate), LocalTime.of(0, 0, 0));
+        LocalDateTime toLocalDateTime = LocalDateTime.of(LocalDate.from(toLocalDate), LocalTime.of(23, 59, 59));
+        return gameMapper.toDtos(gameDao.getMatchesByDate(fromLocalDateTime, toLocalDateTime));
     }
 }

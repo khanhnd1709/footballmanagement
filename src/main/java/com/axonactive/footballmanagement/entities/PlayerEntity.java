@@ -22,7 +22,6 @@ public class PlayerEntity extends PersonEntity {
     private FootednessEnum footedness;
 
     @OneToMany(mappedBy = "player")
-    @JsonManagedReference
     private List<TeamPlayedEntity> teams;
 
 }
