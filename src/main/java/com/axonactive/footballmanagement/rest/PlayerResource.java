@@ -17,6 +17,7 @@ import java.util.List;
 
 @Stateless
 @Path(PlayerResource.PATH)
+@Consumes({MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_JSON})
 public class PlayerResource {
     public static final String PATH = "players";
@@ -45,7 +46,6 @@ public class PlayerResource {
         }
     }
 
-    @Consumes({MediaType.APPLICATION_JSON})
     @POST
     public Response createPlayer(@Valid PlayerEntity player) {
         try {
@@ -59,6 +59,23 @@ public class PlayerResource {
                     .build();
         }
     }
+
+    @PATCH
+    @Path("{id}")
+    public Response createPlayer(@PathParam("id") Long id, @Valid PlayerEntity player) {
+        try {
+            return Response.status(Response.Status.CREATED)
+                    .entity(playerService.updatePlayer(player)).build();
+        }
+        catch (CustomException exception) {
+            return Response.status(exception.getResponse().getStatus())
+                    .entity(exception.getMessage())
+                    .type(MediaType.TEXT_PLAIN)
+                    .build();
+        }
+    }
+
+
 
 //    @POST
 //    @Consumes({MediaType.APPLICATION_JSON})

@@ -27,8 +27,6 @@ public class PersonEntity {
     @Past
     protected LocalDate dob;
 
-    @Size(max = 100)
-    @Column(length = 100)
     @Enumerated(value = EnumType.STRING)
     protected NationalityEnum nationality;
 

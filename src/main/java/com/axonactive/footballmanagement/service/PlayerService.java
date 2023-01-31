@@ -86,7 +86,11 @@ public class PlayerService {
     }
 
     public PlayerDto createPlayer(PlayerEntity player) {
-        return playerMapper.toDto(playerDao.createPlayer(player));
+        return playerMapper.toDto(playerDao.savePlayer(player));
+    }
+
+    public PlayerDto updatePlayer(PlayerEntity player) {
+        return playerMapper.toDto(playerDao.savePlayer(player));
     }
 
     public void validateGeneralAddRequest(List<?> objects) {

@@ -47,7 +47,9 @@ public class PlayerDaoImpl implements PlayerDao {
     }
 
     @Override
-    public PlayerEntity createPlayer(PlayerEntity player) {
+    public PlayerEntity savePlayer(PlayerEntity player) {
         return em.merge(player);
     }
+
+
 }
