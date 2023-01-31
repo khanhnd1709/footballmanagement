@@ -60,12 +60,12 @@ public class PlayerResource {
         }
     }
 
-    @PATCH
+    @PUT
     @Path("{id}")
-    public Response createPlayer(@PathParam("id") Long id, @Valid PlayerEntity player) {
+    public Response updatePlayer(@PathParam("id") Long id, @Valid PlayerEntity player) {
         try {
-            return Response.status(Response.Status.CREATED)
-                    .entity(playerService.updatePlayer(player)).build();
+            return Response.ok()
+                    .entity(playerService.updatePlayer(id, player)).build();
         }
         catch (CustomException exception) {
             return Response.status(exception.getResponse().getStatus())
@@ -75,7 +75,19 @@ public class PlayerResource {
         }
     }
 
-
+    @DELETE
+    @Path("{id}")
+    public Response deletePlayer(@PathParam("id") Long id) {
+        try {
+            return Response.status(Response.Status.NO_CONTENT).build();
+        }
+        catch (CustomException exception) {
+            return Response.status(exception.getResponse().getStatus())
+                    .entity(exception.getMessage())
+                    .type(MediaType.TEXT_PLAIN)
+                    .build();
+        }
+    }
 
 //    @POST
 //    @Consumes({MediaType.APPLICATION_JSON})

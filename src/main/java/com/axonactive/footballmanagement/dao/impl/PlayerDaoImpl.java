@@ -47,8 +47,18 @@ public class PlayerDaoImpl implements PlayerDao {
     }
 
     @Override
-    public PlayerEntity savePlayer(PlayerEntity player) {
+    public PlayerEntity mergePlayer(PlayerEntity player) {
         return em.merge(player);
+    }
+
+    @Override
+    public void persistPlayer(PlayerEntity player) {
+        em.persist(player);
+    }
+
+    @Override
+    public void removePlayer(PlayerEntity player) {
+        em.remove(player);
     }
 
 

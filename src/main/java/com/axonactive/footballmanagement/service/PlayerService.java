@@ -86,11 +86,23 @@ public class PlayerService {
     }
 
     public PlayerDto createPlayer(PlayerEntity player) {
-        return playerMapper.toDto(playerDao.savePlayer(player));
+        playerDao.persistPlayer(player);
+        return playerMapper.toDto(player);
     }
 
-    public PlayerDto updatePlayer(PlayerEntity player) {
-        return playerMapper.toDto(playerDao.savePlayer(player));
+    public PlayerDto updatePlayer(Long id, PlayerEntity player) {
+        if (!id.equals(player.getId()))
+            throw new CustomException(ErrorConstant.MSG_IDPATHPARAM_CONFLICT_IDBODY, Response.Status.FORBIDDEN);
+        if (getPlayerById(id) == null)
+            throw new CustomException(ErrorConstant.MSG_PLAYER_NOT_FOUND, Response.Status.NOT_FOUND);
+        return playerMapper.toDto(playerDao.mergePlayer(player));
+    }
+
+    public void deletePlayer(Long id) {
+        PlayerEntity player = getPlayerById(id);
+        if (player == null)
+            throw new CustomException(ErrorConstant.MSG_PLAYER_NOT_FOUND, Response.Status.NOT_FOUND);
+        playerDao.removePlayer(player);
     }
 
     public void validateGeneralAddRequest(List<?> objects) {
