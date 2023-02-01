@@ -1,9 +1,12 @@
 package com.axonactive.footballmanagement.dao;
 
-import com.axonactive.footballmanagement.entities.PlayerEntity;
+import javax.ejb.Stateless;
+import java.util.List;
 
+@Stateless
 public interface GenericDao<T> {
-    T merge(T object);
-    void persist(T object);
-    void remove(T object);
+    T findById(Object id);
+    List<T> findAll();
+    T makePersistent(T instance);
+    void makeTransient(T instance);
 }

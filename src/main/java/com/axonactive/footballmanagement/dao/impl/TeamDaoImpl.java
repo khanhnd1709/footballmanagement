@@ -9,13 +9,9 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 @Stateless
-public class TeamDaoImpl implements TeamDao {
+public class TeamDaoImpl extends GenericDaoImpl<TeamEntity> implements TeamDao {
 
-    @PersistenceContext(unitName = "football")
-    EntityManager em;
-
-    @Override
-    public TeamEntity getTeamById(Long id) {
-        return em.find(TeamEntity.class, id);
+    protected TeamDaoImpl() {
+        super(TeamEntity.class);
     }
 }

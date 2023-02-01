@@ -79,6 +79,7 @@ public class PlayerResource {
     @Path("{id}")
     public Response deletePlayer(@PathParam("id") Long id) {
         try {
+            playerService.deletePlayer(id);
             return Response.status(Response.Status.NO_CONTENT).build();
         }
         catch (CustomException exception) {

@@ -12,19 +12,12 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Stateless
-public class PlayerDaoImpl implements PlayerDao {
+public class PlayerDaoImpl extends GenericDaoImpl<PlayerEntity> implements PlayerDao  {
     @PersistenceContext(unitName = "football")
     EntityManager em;
 
-    @Override
-    public PlayerEntity getPlayerById(Long id) throws NoResultException {
-        return em.find(PlayerEntity.class, id);
-    }
-
-    @Override
-    public List<PlayerEntity> getAllPlayers() {
-        return em.createQuery("SELECT p FROM PlayerEntity p", PlayerEntity.class)
-                .getResultList();
+    protected PlayerDaoImpl() {
+        super(PlayerEntity.class);
     }
 
     /**
@@ -50,23 +43,4 @@ public class PlayerDaoImpl implements PlayerDao {
             return null;
         }
     }
-
-
-
-    @Override
-    public void persistPlayer(PlayerEntity player) {
-        em.persist(player);
-    }
-
-    @Override
-    public PlayerEntity mergePlayer(PlayerEntity player) {
-        return em.merge(player);
-    }
-
-    @Override
-    public void removePlayer(PlayerEntity player) {
-        em.remove(player);
-    }
-
-
 }

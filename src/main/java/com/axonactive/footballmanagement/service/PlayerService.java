@@ -1,5 +1,6 @@
 package com.axonactive.footballmanagement.service;
 
+import com.axonactive.footballmanagement.dao.GenericDao;
 import com.axonactive.footballmanagement.dao.PlayerDao;
 import com.axonactive.footballmanagement.dao.TeamDao;
 import com.axonactive.footballmanagement.entities.PlayerEntity;
@@ -13,9 +14,7 @@ import com.axonactive.footballmanagement.service.mapper.PlayerMapper;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.NoResultException;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +36,7 @@ public class PlayerService {
 //            return playerMapper.toDto(currentTeamPlayed);
 //        }
 //
-        PlayerEntity player = playerDao.getPlayerById(id);
+        PlayerEntity player = playerDao.findById(id);
         if (player == null) {
             throw new CustomException(ErrorConstant.MSG_PLAYER_NOT_FOUND, Response.Status.NOT_FOUND);
         }
@@ -45,10 +44,8 @@ public class PlayerService {
         //return playerMapper.toDto(playerDao.getPlayerById(id));
     }
 
-
-
     public List<PlayerDto> getAllPlayers() {
-        List<PlayerEntity> players = playerDao.getAllPlayers();
+        List<PlayerEntity> players = playerDao.findAll();
         return players.stream()
                 .map(player -> {
                     TeamPlayedEntity currentTeamPlayed = playerDao.getCurrentTeamPlayedByPlayerId(player.getId());
@@ -61,7 +58,7 @@ public class PlayerService {
     }
 
     public List<PlayerDto> getCurrentActivePlayersByTeamId(Long id) {
-        TeamEntity team = teamDao.getTeamById(id);
+        TeamEntity team = teamDao.findById(id);
         if (team == null) {
             throw new CustomException(ErrorConstant.MSG_TEAM_NOT_FOUND, Response.Status.NOT_FOUND);
         }
@@ -73,23 +70,22 @@ public class PlayerService {
     public PlayerDto createPlayer(PlayerEntity player) {
         if (player.getId() != null)
             throw new CustomException(ErrorConstant.MSG_ID_PROVIDED_IN_CREATE_METHOD, Response.Status.BAD_REQUEST);
-        playerDao.persistPlayer(player);
-        return playerMapper.toDto(player);
+        return playerMapper.toDto(playerDao.makePersistent(player));
     }
 
     public PlayerDto updatePlayer(Long id, PlayerEntity player) {
         if (!id.equals(player.getId()))
             throw new CustomException(ErrorConstant.MSG_IDPATHPARAM_CONFLICT_IDBODY, Response.Status.FORBIDDEN);
-        if (playerDao.getPlayerById(id) == null)
+        if (playerDao.findById(id) == null)
             throw new CustomException(ErrorConstant.MSG_PLAYER_NOT_FOUND, Response.Status.NOT_FOUND);
-        return playerMapper.toDto(playerDao.mergePlayer(player));
+        return playerMapper.toDto(playerDao.makePersistent(player));
     }
 
     public void deletePlayer(Long id) {
-        PlayerEntity player = playerDao.getPlayerById(id);
+        PlayerEntity player = playerDao.findById(id);
         if (player == null)
             throw new CustomException(ErrorConstant.MSG_PLAYER_NOT_FOUND, Response.Status.NOT_FOUND);
-        playerDao.removePlayer(player);
+        playerDao.makeTransient(player);
     }
 
     public void validateGeneralAddRequest(List<?> objects) {

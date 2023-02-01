@@ -24,6 +24,6 @@ public class GameService {
     public List<GameDto> getMatchesByDate(LocalDate fromLocalDate, LocalDate toLocalDate) {
         LocalDateTime fromLocalDateTime = LocalDateTime.of(LocalDate.from(fromLocalDate), LocalTime.of(0, 0, 0));
         LocalDateTime toLocalDateTime = LocalDateTime.of(LocalDate.from(toLocalDate), LocalTime.of(23, 59, 59));
-        return gameMapper.toDtos(gameDao.getMatchesByDate(fromLocalDateTime, toLocalDateTime));
+        return gameMapper.toDtos(gameDao.findByDate(fromLocalDateTime, toLocalDateTime));
     }
 }

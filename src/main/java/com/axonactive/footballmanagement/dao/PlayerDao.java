@@ -8,12 +8,7 @@ import javax.ejb.Stateless;
 import java.util.List;
 
 @Stateless
-public interface PlayerDao {
-    PlayerEntity getPlayerById(Long id);
-    List<PlayerEntity> getAllPlayers();
+public interface PlayerDao extends GenericDao<PlayerEntity> {
     TeamPlayedEntity getCurrentTeamPlayedByPlayerId(Long id);
-//    PlayerEntity mergePlayer(PlayerEntity player);
-//    void persistPlayer(PlayerEntity player);
-//    void removePlayer(PlayerEntity player);
 
 }

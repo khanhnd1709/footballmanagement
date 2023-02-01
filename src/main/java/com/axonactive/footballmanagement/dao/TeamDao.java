@@ -6,6 +6,4 @@ import com.axonactive.footballmanagement.entities.TeamEntity;
 import javax.ejb.Stateless;
 
 @Stateless
-public interface TeamDao {
-    TeamEntity getTeamById(Long id);
-}
+public interface TeamDao extends GenericDao<TeamEntity> {}

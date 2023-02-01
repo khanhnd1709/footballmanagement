@@ -11,13 +11,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Stateless
-public class GameDaoImpl implements GameDao {
+public class GameDaoImpl extends GenericDaoImpl<GameEntity> implements GameDao {
 
     @PersistenceContext(unitName = "football")
     EntityManager em;
 
+    protected GameDaoImpl() {
+        super(GameEntity.class);
+    }
+
     @Override
-    public List<GameEntity> getMatchesByDate(LocalDateTime fromLocalDateTime, LocalDateTime toLocalDateTime) {
+    public List<GameEntity> findByDate(LocalDateTime fromLocalDateTime, LocalDateTime toLocalDateTime) {
         return em.createQuery("SELECT g FROM GameEntity g WHERE g.dateTimeOfGame>=:fromDateTime" +
                         " AND g.dateTimeOfGame<=:toDateTime", GameEntity.class)
                 .setParameter("fromDateTime", fromLocalDateTime)
