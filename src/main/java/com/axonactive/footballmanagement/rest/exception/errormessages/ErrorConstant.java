@@ -5,7 +5,6 @@ public class ErrorConstant {
     public static final String MSG_REQUEST_EMPTY = "Request empty";
     public static final String MSG_PLAYER_NOT_FOUND = "Player not found";
     public static final String MSG_TEAM_NOT_FOUND = "Team not found";
-
     public static final String MSG_IDPATHPARAM_CONFLICT_IDBODY = "Different ID between pathparam and request body";
-
+    public static final String MSG_ID_PROVIDED_IN_CREATE_METHOD = "Do not allow provide id in create method";
 }

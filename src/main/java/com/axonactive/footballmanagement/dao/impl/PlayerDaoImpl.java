@@ -17,8 +17,14 @@ public class PlayerDaoImpl implements PlayerDao {
     EntityManager em;
 
     @Override
-    public PlayerEntity getPlayerById(Long id) {
-        return em.find(PlayerEntity.class, id);
+    public PlayerEntity getPlayerById(Long id) throws NoResultException {
+        try {
+            return em.find(PlayerEntity.class, id);
+        }
+        catch (NoResultException noResultException) {
+            return null;
+        }
+
     }
 
     @Override
@@ -39,11 +45,16 @@ public class PlayerDaoImpl implements PlayerDao {
      */
     @Override
     public TeamPlayedEntity getCurrentTeamPlayedByPlayerId(Long id) {
-        return em.createQuery("SELECT tp FROM TeamPlayedEntity tp WHERE tp.player.id=:id" +
-                                " AND tp.leaveDate IS NULL",
-                        TeamPlayedEntity.class)
-                .setParameter("id", id)
-                .getSingleResult();
+        try {
+            return em.createQuery("SELECT tp FROM TeamPlayedEntity tp WHERE tp.player.id=:id" +
+                                    " AND tp.leaveDate IS NULL",
+                            TeamPlayedEntity.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        }
+        catch (NoResultException noResultException) {
+            return null;
+        }
     }
 
     @Override
@@ -54,6 +65,7 @@ public class PlayerDaoImpl implements PlayerDao {
     @Override
     public void persistPlayer(PlayerEntity player) {
         em.persist(player);
+        em.flush();
     }
 
     @Override

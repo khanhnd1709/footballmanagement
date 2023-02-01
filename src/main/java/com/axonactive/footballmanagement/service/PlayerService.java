@@ -32,12 +32,12 @@ public class PlayerService {
     private PlayerMapper playerMapper;
 
     public PlayerDto getPlayerDtoById(Long id) {
-        TeamPlayedEntity currentTeamPlayed = getCurrentTeamPlayedByPlayerId(id);
+        TeamPlayedEntity currentTeamPlayed = playerDao.getCurrentTeamPlayedByPlayerId(id);
         if (currentTeamPlayed != null) {
             return playerMapper.toDto(currentTeamPlayed);
         }
 
-        PlayerEntity player = getPlayerById(id);
+        PlayerEntity player = playerDao.getPlayerById(id);
         if (player == null) {
             throw new CustomException(ErrorConstant.MSG_PLAYER_NOT_FOUND, Response.Status.NOT_FOUND);
         }
@@ -48,31 +48,13 @@ public class PlayerService {
         List<PlayerEntity> players = playerDao.getAllPlayers();
         return players.stream()
                 .map(player -> {
-                    TeamPlayedEntity currentTeamPlayed = getCurrentTeamPlayedByPlayerId(player.getId());
+                    TeamPlayedEntity currentTeamPlayed = playerDao.getCurrentTeamPlayedByPlayerId(player.getId());
                     if (currentTeamPlayed != null) {
                         return playerMapper.toDto(currentTeamPlayed);
                     }
                     return playerMapper.toDto(player);
                 })
                 .collect(Collectors.toList());
-    }
-
-    public TeamPlayedEntity getCurrentTeamPlayedByPlayerId(Long id) {
-        try {
-            return playerDao.getCurrentTeamPlayedByPlayerId(id);
-        }
-        catch (NoResultException noResultException) {
-            return null;
-        }
-    }
-
-    public PlayerEntity getPlayerById(Long id) {
-        try {
-            return playerDao.getPlayerById(id);
-        }
-        catch (NoResultException noResultException) {
-            return null;
-        }
     }
 
     public List<PlayerDto> getCurrentActivePlayersByTeamId(Long id) {
@@ -86,6 +68,8 @@ public class PlayerService {
     }
 
     public PlayerDto createPlayer(PlayerEntity player) {
+        if (player.getId() != null)
+            throw new CustomException(ErrorConstant.MSG_ID_PROVIDED_IN_CREATE_METHOD, Response.Status.BAD_REQUEST);
         playerDao.persistPlayer(player);
         return playerMapper.toDto(player);
     }
@@ -93,13 +77,13 @@ public class PlayerService {
     public PlayerDto updatePlayer(Long id, PlayerEntity player) {
         if (!id.equals(player.getId()))
             throw new CustomException(ErrorConstant.MSG_IDPATHPARAM_CONFLICT_IDBODY, Response.Status.FORBIDDEN);
-        if (getPlayerById(id) == null)
+        if (playerDao.getPlayerById(id) == null)
             throw new CustomException(ErrorConstant.MSG_PLAYER_NOT_FOUND, Response.Status.NOT_FOUND);
         return playerMapper.toDto(playerDao.mergePlayer(player));
     }
 
     public void deletePlayer(Long id) {
-        PlayerEntity player = getPlayerById(id);
+        PlayerEntity player = playerDao.getPlayerById(id);
         if (player == null)
             throw new CustomException(ErrorConstant.MSG_PLAYER_NOT_FOUND, Response.Status.NOT_FOUND);
         playerDao.removePlayer(player);
