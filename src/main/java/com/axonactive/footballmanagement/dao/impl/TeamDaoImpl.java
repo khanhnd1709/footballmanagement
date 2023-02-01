@@ -16,11 +16,6 @@ public class TeamDaoImpl implements TeamDao {
 
     @Override
     public TeamEntity getTeamById(Long id) {
-        try {
-            return em.find(TeamEntity.class, id);
-        }
-        catch (NoResultException noResultException) {
-            return null;
-        }
+        return em.find(TeamEntity.class, id);
     }
 }

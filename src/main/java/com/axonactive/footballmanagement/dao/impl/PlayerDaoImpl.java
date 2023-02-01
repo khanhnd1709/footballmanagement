@@ -18,13 +18,7 @@ public class PlayerDaoImpl implements PlayerDao {
 
     @Override
     public PlayerEntity getPlayerById(Long id) throws NoResultException {
-        try {
-            return em.find(PlayerEntity.class, id);
-        }
-        catch (NoResultException noResultException) {
-            return null;
-        }
-
+        return em.find(PlayerEntity.class, id);
     }
 
     @Override
@@ -57,15 +51,16 @@ public class PlayerDaoImpl implements PlayerDao {
         }
     }
 
-    @Override
-    public PlayerEntity mergePlayer(PlayerEntity player) {
-        return em.merge(player);
-    }
+
 
     @Override
     public void persistPlayer(PlayerEntity player) {
         em.persist(player);
-        em.flush();
+    }
+
+    @Override
+    public PlayerEntity mergePlayer(PlayerEntity player) {
+        return em.merge(player);
     }
 
     @Override

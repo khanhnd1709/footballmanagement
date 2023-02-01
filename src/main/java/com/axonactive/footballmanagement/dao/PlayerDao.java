@@ -12,8 +12,8 @@ public interface PlayerDao {
     PlayerEntity getPlayerById(Long id);
     List<PlayerEntity> getAllPlayers();
     TeamPlayedEntity getCurrentTeamPlayedByPlayerId(Long id);
-    PlayerEntity mergePlayer(PlayerEntity player);
-    void persistPlayer(PlayerEntity player);
-    void removePlayer(PlayerEntity player);
+//    PlayerEntity mergePlayer(PlayerEntity player);
+//    void persistPlayer(PlayerEntity player);
+//    void removePlayer(PlayerEntity player);
 
 }

@@ -32,17 +32,20 @@ public class PlayerService {
     private PlayerMapper playerMapper;
 
     public PlayerDto getPlayerDtoById(Long id) {
-        TeamPlayedEntity currentTeamPlayed = playerDao.getCurrentTeamPlayedByPlayerId(id);
-        if (currentTeamPlayed != null) {
-            return playerMapper.toDto(currentTeamPlayed);
-        }
-
+//        TeamPlayedEntity currentTeamPlayed = playerDao.getCurrentTeamPlayedByPlayerId(id);
+//        if (currentTeamPlayed != null) {
+//            return playerMapper.toDto(currentTeamPlayed);
+//        }
+//
         PlayerEntity player = playerDao.getPlayerById(id);
         if (player == null) {
             throw new CustomException(ErrorConstant.MSG_PLAYER_NOT_FOUND, Response.Status.NOT_FOUND);
         }
         return playerMapper.toDto(player);
+        //return playerMapper.toDto(playerDao.getPlayerById(id));
     }
+
+
 
     public List<PlayerDto> getAllPlayers() {
         List<PlayerEntity> players = playerDao.getAllPlayers();

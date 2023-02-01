@@ -7,9 +7,7 @@ import javax.ws.rs.core.Response;
 
 @ApplicationException(rollback = true)
 public class CustomException extends WebApplicationException {
-
     public CustomException(String message, Response.Status status) {
         super(message, status);
     }
-
 }
