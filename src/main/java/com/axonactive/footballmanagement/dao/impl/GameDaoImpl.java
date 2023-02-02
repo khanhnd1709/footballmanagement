@@ -21,7 +21,7 @@ public class GameDaoImpl extends GenericDaoImpl<GameEntity> implements GameDao {
     }
 
     @Override
-    public List<GameEntity> findByDate(LocalDateTime fromLocalDateTime, LocalDateTime toLocalDateTime) {
+    public List<GameEntity> findGameByDate(LocalDateTime fromLocalDateTime, LocalDateTime toLocalDateTime) {
         return em.createQuery("SELECT g FROM GameEntity g WHERE g.dateTimeOfGame>=:fromDateTime" +
                         " AND g.dateTimeOfGame<=:toDateTime", GameEntity.class)
                 .setParameter("fromDateTime", fromLocalDateTime)

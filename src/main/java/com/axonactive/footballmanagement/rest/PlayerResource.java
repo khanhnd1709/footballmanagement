@@ -26,17 +26,20 @@ public class PlayerResource {
     private PlayerService playerService;
 
     @GET
-    public Response getAllPlayers() {
-        List<PlayerDto> players = playerService.getAllPlayers();
-        return Response.ok().entity(players).build();
+    public Response findAllPlayers() {
+        return Response.ok()
+                .entity(playerService.findAllPlayers())
+                .build();
     }
 
     @GET
     @Path("{id}")
-    public Response getPlayerById(@PathParam("id") Long id) {
+    public Response findPlayerById(@PathParam("id") Long id) {
         try {
-            PlayerDto player = playerService.getPlayerDtoById(id);
-            return Response.ok().entity(player).build();
+            PlayerDto player = playerService.findPlayerById(id);
+            return Response.ok()
+                    .entity(player)
+                    .build();
         }
         catch (CustomException exception) {
             return Response.status(exception.getResponse().getStatus())
@@ -50,7 +53,8 @@ public class PlayerResource {
     public Response createPlayer(@Valid PlayerEntity player) {
         try {
             return Response.status(Response.Status.CREATED)
-                    .entity(playerService.createPlayer(player)).build();
+                    .entity(playerService.createPlayer(player))
+                    .build();
         }
         catch (CustomException exception) {
             return Response.status(exception.getResponse().getStatus())
@@ -65,7 +69,8 @@ public class PlayerResource {
     public Response updatePlayer(@PathParam("id") Long id, @Valid PlayerEntity player) {
         try {
             return Response.ok()
-                    .entity(playerService.updatePlayer(id, player)).build();
+                    .entity(playerService.updatePlayer(id, player))
+                    .build();
         }
         catch (CustomException exception) {
             return Response.status(exception.getResponse().getStatus())
@@ -80,7 +85,8 @@ public class PlayerResource {
     public Response deletePlayer(@PathParam("id") Long id) {
         try {
             playerService.deletePlayer(id);
-            return Response.status(Response.Status.NO_CONTENT).build();
+            return Response.status(Response.Status.NO_CONTENT)
+                    .build();
         }
         catch (CustomException exception) {
             return Response.status(exception.getResponse().getStatus())

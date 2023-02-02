@@ -18,11 +18,11 @@ public interface PlayerMapper {
     @Mapping(source = "player.nationality", target = "nationality")
     @Mapping(source = "player.footedness", target = "footedness")
     @Mapping(source = "team.name", target = "team")
-    PlayerDto toDto(TeamPlayedEntity teamPlayedEntity);
+    PlayerDto toDto(TeamPlayedEntity teamPlayed);
 
-    List<PlayerDto> toDtos(List<TeamPlayedEntity> teamPlayedEntities);
+    List<PlayerDto> toDtos(List<TeamPlayedEntity> teamPlayed);
 
-    PlayerDto toDto(PlayerEntity playerEntity);
+    PlayerDto toDto(PlayerEntity player);
 
 
 

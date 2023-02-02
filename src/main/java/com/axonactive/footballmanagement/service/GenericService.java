@@ -15,7 +15,7 @@ public class GenericService<T extends IGenericEntity> {
 
     protected final Class<T> entityClass;
 
-    protected GenericService(Class<T> entityClass) {
+    public GenericService(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 
@@ -25,24 +25,33 @@ public class GenericService<T extends IGenericEntity> {
         }
     }
 
-    public T findById(Object id) {
+    protected T findById(Object id) {
         T entity = genericDao.findById(id);
         if (entity == null) {
-            throw new CustomException(String.format(ErrorConstant.MSG_NOT_FOUND, entityClass.getName()), Response.Status.NOT_FOUND);
+            throw new CustomException(String.format(
+                    ErrorConstant.MSG_NOT_FOUND, entityClass.getSimpleName().replace("Entity", "")),
+                    Response.Status.NOT_FOUND);
         }
         return entity;
     }
 
-    public T create(T entity) {
+    protected T create(T entity) {
         if (entity.getId() != null)
             throw new CustomException(ErrorConstant.MSG_ID_PROVIDED_IN_CREATE_METHOD, Response.Status.BAD_REQUEST);
         return genericDao.makePersistent(entity);
     }
 
-    public T update(Object id, T entity) {
-        if (entity.getId() != null)
-            throw new CustomException(ErrorConstant.MSG_ID_PROVIDED_IN_CREATE_METHOD, Response.Status.BAD_REQUEST);
+    protected T update(Object id, T entity) {
+        if (!entity.getId().equals(id))
+            throw new CustomException(ErrorConstant.MSG_IDPATHPARAM_CONFLICT_IDBODY, Response.Status.BAD_REQUEST);
+        findById(id);
         return genericDao.makePersistent(entity);
     }
+
+    protected void delete(Object id) {
+        genericDao.makeTransient(findById(id));
+    }
+
+
 
 }

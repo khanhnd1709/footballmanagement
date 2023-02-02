@@ -8,5 +8,5 @@ import java.util.List;
 
 @Stateless
 public interface GameDao extends GenericDao<GameEntity> {
-    List<GameEntity> findByDate(LocalDateTime fromDate, LocalDateTime toDate);
+    List<GameEntity> findGameByDate(LocalDateTime fromDate, LocalDateTime toDate);
 }

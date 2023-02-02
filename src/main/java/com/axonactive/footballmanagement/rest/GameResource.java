@@ -26,7 +26,7 @@ public class GameResource {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate fromLocalDate = LocalDate.parse(fromDate, formatter);
         LocalDate toLocalDate = LocalDate.parse(toDate, formatter);
-        List<GameDto> games = gameService.getMatchesByDate(fromLocalDate, toLocalDate);
+        List<GameDto> games = gameService.findGamesByDate(fromLocalDate, toLocalDate);
         return Response.ok().entity(games).build();
     }
 }

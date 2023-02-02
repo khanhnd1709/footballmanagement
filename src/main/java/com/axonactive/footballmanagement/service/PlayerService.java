@@ -29,11 +29,11 @@ public class PlayerService extends GenericService<PlayerEntity> {
     @Inject
     private TeamService teamService;
 
-    protected PlayerService() {
+    public PlayerService() {
         super(PlayerEntity.class);
     }
 
-    public PlayerDto getPlayerDtoById(Long id) {
+    public PlayerDto findPlayerById(Long id) {
         TeamPlayedEntity currentTeamPlayed = playerDao.getCurrentTeamPlayedByPlayerId(id);
         if (currentTeamPlayed != null) {
             return playerMapper.toDto(currentTeamPlayed);
@@ -41,7 +41,7 @@ public class PlayerService extends GenericService<PlayerEntity> {
         return playerMapper.toDto(findById(id));
     }
 
-    public List<PlayerDto> getAllPlayers() {
+    public List<PlayerDto> findAllPlayers() {
         List<PlayerEntity> players = playerDao.findAll();
         return players.stream()
                 .map(player -> {
@@ -54,7 +54,7 @@ public class PlayerService extends GenericService<PlayerEntity> {
                 .collect(Collectors.toList());
     }
 
-    public List<PlayerDto> getCurrentActivePlayersByTeamId(Long id) {
+    public List<PlayerDto> findCurrentActivePlayersByTeamId(Long id) {
         TeamEntity team = teamService.findById(id);
         return playerMapper.toDtos(team.getAllPlayers().stream()
                 .filter(TeamPlayedEntity::getIsActive)
@@ -62,20 +62,15 @@ public class PlayerService extends GenericService<PlayerEntity> {
     }
 
     public PlayerDto createPlayer(PlayerEntity player) {
-        if (player.getId() != null)
-            throw new CustomException(ErrorConstant.MSG_ID_PROVIDED_IN_CREATE_METHOD, Response.Status.BAD_REQUEST);
-        return playerMapper.toDto(playerDao.makePersistent(player));
+        return playerMapper.toDto(create(player));
     }
 
     public PlayerDto updatePlayer(Long id, PlayerEntity player) {
-        if (!id.equals(player.getId()))
-            throw new CustomException(ErrorConstant.MSG_IDPATHPARAM_CONFLICT_IDBODY, Response.Status.FORBIDDEN);
-        findById(id);
-        return playerMapper.toDto(playerDao.makePersistent(player));
+        return playerMapper.toDto(update(id, player));
     }
 
     public void deletePlayer(Long id) {
-        playerDao.makeTransient(findById(id));
+        delete(id);
     }
 
     public void validateGeneralAddRequest(List<?> objects) {
