@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "coach")
 @Data
-public class CoachEntity extends PersonEntity {
+public class CoachEntity extends PersonEntity implements IGenericEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

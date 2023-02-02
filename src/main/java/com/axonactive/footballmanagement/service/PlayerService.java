@@ -1,6 +1,5 @@
 package com.axonactive.footballmanagement.service;
 
-import com.axonactive.footballmanagement.dao.GenericDao;
 import com.axonactive.footballmanagement.dao.PlayerDao;
 import com.axonactive.footballmanagement.dao.TeamDao;
 import com.axonactive.footballmanagement.entities.PlayerEntity;
@@ -19,29 +18,27 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Stateless
-public class PlayerService {
+public class PlayerService extends GenericService<PlayerEntity> {
 
     @Inject
     private PlayerDao playerDao;
 
     @Inject
-    private TeamDao teamDao;
-
-    @Inject
     private PlayerMapper playerMapper;
 
+    @Inject
+    private TeamService teamService;
+
+    protected PlayerService() {
+        super(PlayerEntity.class);
+    }
+
     public PlayerDto getPlayerDtoById(Long id) {
-//        TeamPlayedEntity currentTeamPlayed = playerDao.getCurrentTeamPlayedByPlayerId(id);
-//        if (currentTeamPlayed != null) {
-//            return playerMapper.toDto(currentTeamPlayed);
-//        }
-//
-        PlayerEntity player = playerDao.findById(id);
-        if (player == null) {
-            throw new CustomException(ErrorConstant.MSG_PLAYER_NOT_FOUND, Response.Status.NOT_FOUND);
+        TeamPlayedEntity currentTeamPlayed = playerDao.getCurrentTeamPlayedByPlayerId(id);
+        if (currentTeamPlayed != null) {
+            return playerMapper.toDto(currentTeamPlayed);
         }
-        return playerMapper.toDto(player);
-        //return playerMapper.toDto(playerDao.getPlayerById(id));
+        return playerMapper.toDto(findById(id));
     }
 
     public List<PlayerDto> getAllPlayers() {
@@ -58,10 +55,7 @@ public class PlayerService {
     }
 
     public List<PlayerDto> getCurrentActivePlayersByTeamId(Long id) {
-        TeamEntity team = teamDao.findById(id);
-        if (team == null) {
-            throw new CustomException(ErrorConstant.MSG_TEAM_NOT_FOUND, Response.Status.NOT_FOUND);
-        }
+        TeamEntity team = teamService.findById(id);
         return playerMapper.toDtos(team.getAllPlayers().stream()
                 .filter(TeamPlayedEntity::getIsActive)
                 .collect(Collectors.toList()));
@@ -76,27 +70,19 @@ public class PlayerService {
     public PlayerDto updatePlayer(Long id, PlayerEntity player) {
         if (!id.equals(player.getId()))
             throw new CustomException(ErrorConstant.MSG_IDPATHPARAM_CONFLICT_IDBODY, Response.Status.FORBIDDEN);
-        if (playerDao.findById(id) == null)
-            throw new CustomException(ErrorConstant.MSG_PLAYER_NOT_FOUND, Response.Status.NOT_FOUND);
+        findById(id);
         return playerMapper.toDto(playerDao.makePersistent(player));
     }
 
     public void deletePlayer(Long id) {
-        PlayerEntity player = playerDao.findById(id);
-        if (player == null)
-            throw new CustomException(ErrorConstant.MSG_PLAYER_NOT_FOUND, Response.Status.NOT_FOUND);
-        playerDao.makeTransient(player);
+        playerDao.makeTransient(findById(id));
     }
 
     public void validateGeneralAddRequest(List<?> objects) {
         isRequestEmpty(objects);
     }
 
-    private void isRequestEmpty(List<?> objects) {
-        if (objects.isEmpty()) {
-            throw new CustomException(ErrorConstant.MSG_REQUEST_EMPTY, Response.Status.BAD_REQUEST);
-        }
-    }
+
 
     public void validateAddPlayerRequest(List<PlayerRequest> playerRequests) {
         // Check active of 1 club do not larger than maxNumberEachClub of League

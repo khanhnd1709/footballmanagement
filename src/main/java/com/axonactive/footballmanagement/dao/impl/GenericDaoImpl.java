@@ -1,14 +1,14 @@
 package com.axonactive.footballmanagement.dao.impl;
 
 import com.axonactive.footballmanagement.dao.GenericDao;
+import com.axonactive.footballmanagement.entities.IGenericEntity;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
-public class GenericDaoImpl<T> implements GenericDao<T> {
+public class GenericDaoImpl<T extends IGenericEntity> implements GenericDao<T> {
     @PersistenceContext(unitName = "football")
     protected EntityManager em;
 
@@ -31,12 +31,12 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
         return em.createQuery(c).getResultList();
     }
 
-    public T makePersistent(T instance) {
-        return em.merge(instance);
+    public T makePersistent(T entity) {
+        return em.merge(entity);
     }
 
-    public void makeTransient(T instance) {
-        em.remove(instance);
+    public void makeTransient(T entity) {
+        em.remove(entity);
     }
 
 }

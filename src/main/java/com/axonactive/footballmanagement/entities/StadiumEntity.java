@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "stadium")
 @Data
-public class StadiumEntity {
+public class StadiumEntity implements IGenericEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

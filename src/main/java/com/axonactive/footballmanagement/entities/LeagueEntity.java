@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "league")
 @Data
-public class LeagueEntity {
+public class LeagueEntity implements IGenericEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

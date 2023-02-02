@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GameEntity {
+public class GameEntity implements IGenericEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

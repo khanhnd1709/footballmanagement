@@ -12,11 +12,11 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Stateless
-public class PlayerDaoImpl extends GenericDaoImpl<PlayerEntity> implements PlayerDao  {
+public class PlayerDaoImpl extends GenericDaoImpl<PlayerEntity> implements PlayerDao {
     @PersistenceContext(unitName = "football")
     EntityManager em;
 
-    protected PlayerDaoImpl() {
+    public PlayerDaoImpl() {
         super(PlayerEntity.class);
     }
 
@@ -43,4 +43,5 @@ public class PlayerDaoImpl extends GenericDaoImpl<PlayerEntity> implements Playe
             return null;
         }
     }
+
 }

@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "team_coached")
 @Data
-public class TeamCoachedEntity {
+public class TeamCoachedEntity implements IGenericEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

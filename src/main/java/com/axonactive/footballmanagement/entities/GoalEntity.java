@@ -14,7 +14,7 @@ import javax.validation.constraints.PositiveOrZero;
 @Entity
 @Table(name = "goal")
 @Data
-public class GoalEntity {
+public class GoalEntity implements IGenericEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

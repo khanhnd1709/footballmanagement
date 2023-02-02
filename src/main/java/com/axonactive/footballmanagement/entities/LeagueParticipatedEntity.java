@@ -1,12 +1,15 @@
 package com.axonactive.footballmanagement.entities;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Data
 @Table(name = "league_participated",
         uniqueConstraints= @UniqueConstraint(columnNames={"team_id", "league_id"}))
-public class LeagueParticipatedEntity {
+public class LeagueParticipatedEntity implements IGenericEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

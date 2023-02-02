@@ -11,7 +11,7 @@ import javax.validation.constraints.PositiveOrZero;
 @Table(name = "game_played",
         uniqueConstraints= @UniqueConstraint(columnNames={"player_id", "game_id"}))
 @Data
-public class GamePlayedEntity {
+public class GamePlayedEntity implements IGenericEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
