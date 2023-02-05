@@ -2,7 +2,6 @@ package com.axonactive.footballmanagement.service;
 
 import com.axonactive.footballmanagement.dao.GameDao;
 import com.axonactive.footballmanagement.entities.GameEntity;
-import com.axonactive.footballmanagement.entities.PlayerEntity;
 import com.axonactive.footballmanagement.service.dto.GameDto;
 import com.axonactive.footballmanagement.service.mapper.GameMapper;
 
@@ -11,7 +10,6 @@ import javax.inject.Inject;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Stateless

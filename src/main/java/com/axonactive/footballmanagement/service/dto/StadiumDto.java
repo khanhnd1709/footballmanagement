@@ -1,7 +1,7 @@
 package com.axonactive.footballmanagement.service.dto;
 
-public class TeamDto {
+public class StadiumDto {
     private Long id;
     private String name;
-    private StadiumDto stadium;
+    private String address;
 }

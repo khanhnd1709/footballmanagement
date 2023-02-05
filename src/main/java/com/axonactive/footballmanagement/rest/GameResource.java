@@ -12,8 +12,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@Stateless
 @Path(GameResource.PATH)
+@Consumes({MediaType.APPLICATION_JSON})
+@Produces(MediaType.APPLICATION_JSON)
 public class GameResource {
     public static final String PATH = "games";
 
@@ -21,7 +22,6 @@ public class GameResource {
     private GameService gameService;
 
     @GET
-    @Produces({MediaType.APPLICATION_JSON})
     public Response getMatchesByDate(@QueryParam("fromDate") String fromDate, @QueryParam("toDate") String toDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate fromLocalDate = LocalDate.parse(fromDate, formatter);

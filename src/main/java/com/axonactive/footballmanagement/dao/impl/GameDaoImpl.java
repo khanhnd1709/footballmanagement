@@ -6,7 +6,6 @@ import com.axonactive.footballmanagement.entities.GameEntity;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

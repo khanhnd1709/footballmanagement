@@ -1,7 +1,6 @@
 package com.axonactive.footballmanagement.entities;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -27,7 +26,6 @@ public class GameTime {
     private Integer extraMin;
 
     public void setExtraMin(Integer extraMin) {
-        if (min == 45 || min == 90 || min == 105 || min == 120)
-            this.extraMin = extraMin;
+        if (min == 45 || min == 90 || min == 105 || min == 120) this.extraMin = extraMin;
     }
 }

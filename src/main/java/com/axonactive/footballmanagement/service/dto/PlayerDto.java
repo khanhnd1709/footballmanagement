@@ -19,7 +19,7 @@ public class PlayerDto {
     private Integer weight;
     private FootednessEnum footedness;
     private NationalityEnum nationality;
-    private String team;
+    private TeamDto team;
     private Integer numberShirt;
     private Long salary;
     private Long transferFee;
