@@ -15,13 +15,9 @@ import java.util.List;
 public class GenericService<T extends IGenericEntity> {
     protected final Class<T> entityClass;
     protected final String entityClassName;
+
     @Inject
     private GenericDao<T> genericDao;
-
-    public GenericService() {
-        this.entityClass = PlayerEntity.class;
-        this.entityClassName = entityClass.getSimpleName().replace("Entity", "");
-    }
 
     public GenericService(Class<T> entityClass) {
         this.entityClass = entityClass;

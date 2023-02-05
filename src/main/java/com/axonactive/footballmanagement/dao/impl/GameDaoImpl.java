@@ -12,9 +12,6 @@ import java.util.List;
 @Stateless
 public class GameDaoImpl extends GenericDaoImpl<GameEntity> implements GameDao {
 
-    @PersistenceContext(unitName = "football")
-    EntityManager em;
-
     protected GameDaoImpl() {
         super(GameEntity.class);
     }

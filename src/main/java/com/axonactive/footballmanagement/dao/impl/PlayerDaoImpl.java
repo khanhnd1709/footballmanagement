@@ -11,8 +11,6 @@ import javax.persistence.PersistenceContext;
 
 @Stateless
 public class PlayerDaoImpl extends GenericDaoImpl<PlayerEntity> implements PlayerDao {
-    @PersistenceContext(unitName = "football")
-    EntityManager em;
 
     public PlayerDaoImpl() {
         super(PlayerEntity.class);

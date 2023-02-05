@@ -9,7 +9,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 @Stateless
-public class TeamPlayedDaoImpl extends GenericDaoImpl implements TeamPlayedDao {
+public class TeamPlayedDaoImpl extends GenericDaoImpl<TeamPlayedEntity> implements TeamPlayedDao {
 
     public TeamPlayedDaoImpl() {
         super(TeamPlayedEntity.class);

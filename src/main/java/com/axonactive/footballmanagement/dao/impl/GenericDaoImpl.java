@@ -16,7 +16,7 @@ public class GenericDaoImpl<T extends IGenericEntity> implements GenericDao<T> {
     @PersistenceContext(unitName = "football")
     protected EntityManager em;
 
-    protected GenericDaoImpl(Class<T> entityClass) {
+    public GenericDaoImpl(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 
@@ -32,14 +32,17 @@ public class GenericDaoImpl<T extends IGenericEntity> implements GenericDao<T> {
         return em.createQuery(c).getResultList();
     }
 
+    @Override
     public void persist(T entity) {
         em.persist(entity);
     }
 
+    @Override
     public T merge(T entity) {
         return em.merge(entity);
     }
 
+    @Override
     public void remove(T entity) {
         em.remove(entity);
     }
