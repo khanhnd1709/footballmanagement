@@ -5,6 +5,7 @@ import com.axonactive.footballmanagement.entities.IGenericEntity;
 import com.axonactive.footballmanagement.rest.exception.CustomException;
 import com.axonactive.footballmanagement.rest.exception.errormessages.ErrorConstant;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import java.util.List;

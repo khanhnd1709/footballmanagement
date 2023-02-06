@@ -5,7 +5,6 @@ import com.axonactive.footballmanagement.entities.IGenericEntity;
 import javax.ejb.Stateless;
 import java.util.List;
 
-@Stateless
 public interface GenericDao<T extends IGenericEntity> {
     T findById(Object id);
     List<T> findAll();
