@@ -36,9 +36,15 @@ public class PlayerService extends GenericService<PlayerEntity> {
         super(PlayerEntity.class);
     }
 
+    public PlayerDto findById_ToPlayerDto(Long id) {
+        PlayerDto playerDto = teamPlayedService.findCurrentTeamPlayedByPlayerId_ToPlayerDto(id);
+        if (playerDto == null) playerDto = playerMapper.toDto(findById(id));
+        return playerDto;
+    }
+
     public List<PlayerDto> findAll_ToPlayerDto() {
         return findAll().stream()
-                .map(player -> teamPlayedService.findCurrentTeamPlayedByPlayerId_ToPlayerDto(player.getId()))
+                .map(player -> findById_ToPlayerDto(player.getId()))
                 .collect(Collectors.toList());
     }
 

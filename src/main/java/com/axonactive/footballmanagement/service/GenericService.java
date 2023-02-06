@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Stateless
+
 public class GenericService<T extends IGenericEntity> {
     protected final Class<T> entityClass;
     protected final String entityClassName;

@@ -10,5 +10,4 @@ public class SeasonService extends GenericService<SeasonEntity> {
         super(SeasonEntity.class);
     }
 
-
 }

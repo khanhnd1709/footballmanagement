@@ -50,7 +50,8 @@ public class TeamPlayedService extends GenericService<TeamPlayedEntity> {
     }
 
     public PlayerDto findCurrentTeamPlayedByPlayerId_ToPlayerDto(Long playerId) {
-        return teamPlayedMapper.toDto(findCurrentTeamPlayedByPlayerId(playerId).orElse(null));
+        return teamPlayedMapper.toDto(findCurrentTeamPlayedByPlayerId(playerId)
+                .orElse(null));
     }
 
     public List<TeamPlayedEntity> findAllTeamPlayedsByTeamId(Long teamId) {

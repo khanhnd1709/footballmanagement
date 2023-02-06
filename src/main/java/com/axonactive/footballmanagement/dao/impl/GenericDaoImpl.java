@@ -10,7 +10,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 import java.util.Optional;
 
-@Stateless
 public class GenericDaoImpl<T extends IGenericEntity> implements GenericDao<T> {
     protected final Class<T> entityClass;
     @PersistenceContext(unitName = "football")

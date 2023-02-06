@@ -66,7 +66,8 @@ public class TeamResource {
         try {
             teamService.deleteTeam(id);
             return Response.status(Response.Status.NO_CONTENT).build();
-        } catch (CustomException exception) {
+        }
+        catch (CustomException exception) {
             return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
         }
     }

@@ -5,7 +5,6 @@ import com.axonactive.footballmanagement.entities.TeamPlayedEntity;
 
 import javax.ejb.Stateless;
 
-@Stateless
 public interface PlayerDao extends GenericDao<PlayerEntity> {
 
 

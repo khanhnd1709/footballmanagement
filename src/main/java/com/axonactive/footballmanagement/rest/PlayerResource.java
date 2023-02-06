@@ -34,7 +34,7 @@ public class PlayerResource {
     @Path("{id}")
     public Response findPlayerById(@PathParam("id") Long id) {
         try {
-            return Response.ok().entity(teamPlayedService.findCurrentTeamPlayedByPlayerId_ToPlayerDto(id)).build();
+            return Response.ok().entity(playerService.findById_ToPlayerDto(id)).build();
         } catch (CustomException exception) {
             return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
         }
