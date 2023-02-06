@@ -1,9 +1,7 @@
 package com.axonactive.footballmanagement.entities;
 
 import com.axonactive.footballmanagement.enums.AccrLevelEnum;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
-import org.hibernate.annotations.Where;
+import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.PositiveOrZero;

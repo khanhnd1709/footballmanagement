@@ -21,44 +21,25 @@ import java.util.stream.Collectors;
 public class PlayerService extends GenericService<PlayerEntity> {
 
     @Inject
+    private TeamService teamService;
+
+    @Inject
+    private TeamPlayedService teamPlayedService;
+
+    @Inject
     private PlayerDao playerDao;
 
     @Inject
     private PlayerMapper playerMapper;
 
-    @Inject
-    private TeamService teamService;
-
     public PlayerService() {
         super(PlayerEntity.class);
     }
 
-    public PlayerDto findPlayerById(Long id) {
-        TeamPlayedEntity currentTeamPlayed = playerDao.getCurrentTeamPlayedByPlayerId(id);
-        if (currentTeamPlayed != null) {
-            return playerMapper.toDto(currentTeamPlayed);
-        }
-        return playerMapper.toDto(findById(id));
-    }
-
-    public List<PlayerDto> findAllPlayers() {
-        List<PlayerEntity> players = playerDao.findAll();
-        return players.stream()
-                .map(player -> {
-                    TeamPlayedEntity currentTeamPlayed = playerDao.getCurrentTeamPlayedByPlayerId(player.getId());
-                    if (currentTeamPlayed != null) {
-                        return playerMapper.toDto(currentTeamPlayed);
-                    }
-                    return playerMapper.toDto(player);
-                })
+    public List<PlayerDto> findAll_ToPlayerDto() {
+        return findAll().stream()
+                .map(player -> teamPlayedService.findCurrentTeamPlayedByPlayerId_ToPlayerDto(player.getId()))
                 .collect(Collectors.toList());
-    }
-
-    public List<PlayerDto> findCurrentActivePlayersByTeamId(Long id) {
-        TeamEntity team = teamService.findById(id);
-        return playerMapper.toDtos(team.getAllPlayers().stream()
-                .filter(TeamPlayedEntity::getIsActive)
-                .collect(Collectors.toList()));
     }
 
     public PlayerDto createPlayer(PlayerEntity player) {
@@ -74,7 +55,7 @@ public class PlayerService extends GenericService<PlayerEntity> {
     }
 
     public void validateGeneralAddRequest(List<?> objects) {
-        isRequestEmpty(objects);
+        checkRequestEmpty(objects);
     }
 
 

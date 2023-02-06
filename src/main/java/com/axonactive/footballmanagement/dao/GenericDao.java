@@ -4,10 +4,12 @@ import com.axonactive.footballmanagement.entities.IGenericEntity;
 
 import javax.ejb.Stateless;
 import java.util.List;
+import java.util.Optional;
 
 public interface GenericDao<T extends IGenericEntity> {
-    T findById(Object id);
+    Optional<T> findById(Object id);
     List<T> findAll();
-    T makePersistent(T instance);
-    void makeTransient(T instance);
+    void persist(T entity);
+    T merge(T entity);
+    void remove(T entity);
 }

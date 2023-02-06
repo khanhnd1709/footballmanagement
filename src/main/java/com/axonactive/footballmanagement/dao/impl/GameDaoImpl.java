@@ -6,15 +6,11 @@ import com.axonactive.footballmanagement.entities.GameEntity;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Stateless
 public class GameDaoImpl extends GenericDaoImpl<GameEntity> implements GameDao {
-
-    @PersistenceContext(unitName = "football")
-    EntityManager em;
 
     protected GameDaoImpl() {
         super(GameEntity.class);

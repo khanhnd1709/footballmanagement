@@ -1,20 +1,18 @@
 package com.axonactive.footballmanagement.entities;
 
 import com.axonactive.footballmanagement.enums.NationalityEnum;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "league")
 @Data
+@Table(name = "league")
 public class LeagueEntity implements IGenericEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,7 +34,7 @@ public class LeagueEntity implements IGenericEntity {
 
     @Min(value = 30)
     @Column(columnDefinition = "integer default 30")
-    private Integer maxPLayerEachTeam;
+    private Integer maxActivePLayerEachTeam;
 
     @Min(value = 20)
     @Column(columnDefinition = "integer default 20")
@@ -44,16 +42,4 @@ public class LeagueEntity implements IGenericEntity {
 
     @PositiveOrZero
     private Integer maxNumberOfSubstituteEachGame;
-
-    @OneToMany(mappedBy = "league")
-    private List<LeagueParticipatedEntity> teams;
-
-    @OneToMany(mappedBy = "league")
-    private List<GameEntity> games;
-
-    @PastOrPresent
-    private LocalDate startDate;
-
-    @PastOrPresent
-    private LocalDate endDate;
 }

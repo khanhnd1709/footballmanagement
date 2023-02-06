@@ -11,11 +11,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class GameDto {
-    private String leagueName;
     private String home;
     private String away;
     private List<PlayerDto> players;
     private List<GoalDto> goals;
     private LocalDateTime dateTimeOfGame;
-    private String stadiumName;
+    private StadiumDto stadium;
 }

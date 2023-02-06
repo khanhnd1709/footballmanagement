@@ -1,6 +1,6 @@
 package com.axonactive.footballmanagement.entities;
 
-import lombok.*;
+import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

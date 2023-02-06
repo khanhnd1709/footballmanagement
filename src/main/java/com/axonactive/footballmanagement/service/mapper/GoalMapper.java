@@ -1,8 +1,6 @@
 package com.axonactive.footballmanagement.service.mapper;
 
-import com.axonactive.footballmanagement.entities.GameEntity;
 import com.axonactive.footballmanagement.entities.GoalEntity;
-import com.axonactive.footballmanagement.service.dto.GameDto;
 import com.axonactive.footballmanagement.service.dto.GoalDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

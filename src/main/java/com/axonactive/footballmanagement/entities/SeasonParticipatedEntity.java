@@ -7,9 +7,8 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
-@Table(name = "league_participated",
-        uniqueConstraints= @UniqueConstraint(columnNames={"team_id", "league_id"}))
-public class LeagueParticipatedEntity implements IGenericEntity {
+@Table(name = "season_participated", uniqueConstraints = @UniqueConstraint(columnNames = {"team_id", "season_id"}))
+public class SeasonParticipatedEntity implements IGenericEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +21,10 @@ public class LeagueParticipatedEntity implements IGenericEntity {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "league_id")
-    private LeagueEntity league;
+    @JoinColumn(name = "season_id")
+    private SeasonEntity season;
 
     private Integer rank;
 
     private RecordEntity record;
-
 }
