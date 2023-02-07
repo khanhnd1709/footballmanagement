@@ -1,15 +1,19 @@
 package com.axonactive.footballmanagement.service.mapper;
 
 import com.axonactive.footballmanagement.entities.TeamEntity;
+import com.axonactive.footballmanagement.rest.request.TeamRequest;
 import com.axonactive.footballmanagement.service.dto.TeamDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "cdi")
+@Mapper(componentModel = "cdi", uses = {StadiumMapper.class})
 public interface TeamMapper {
 
     TeamDto toDto(TeamEntity team);
 
     List<TeamDto> toDtos(List<TeamEntity> team);
+
+    TeamEntity toEntity(TeamRequest teamRequest);
 }

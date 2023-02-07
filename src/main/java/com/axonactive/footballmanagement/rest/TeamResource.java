@@ -2,6 +2,7 @@ package com.axonactive.footballmanagement.rest;
 
 import com.axonactive.footballmanagement.entities.TeamEntity;
 import com.axonactive.footballmanagement.rest.exception.CustomException;
+import com.axonactive.footballmanagement.rest.request.TeamRequest;
 import com.axonactive.footballmanagement.service.PlayerService;
 import com.axonactive.footballmanagement.service.TeamPlayedService;
 import com.axonactive.footballmanagement.service.TeamService;
@@ -42,7 +43,7 @@ public class TeamResource {
     }
 
     @POST
-    public Response createTeam(@Valid TeamEntity team) {
+    public Response createTeam(@Valid TeamRequest team) {
         try {
             return Response.status(Response.Status.CREATED).entity(teamService.createTeam(team)).build();
         } catch (CustomException exception) {
@@ -52,7 +53,7 @@ public class TeamResource {
 
     @PUT
     @Path("{id}")
-    public Response updateTeam(@PathParam("id") Long id, @Valid TeamEntity team) {
+    public Response updateTeam(@PathParam("id") Long id, @Valid TeamRequest team) {
         try {
             return Response.ok().entity(teamService.updateTeam(id, team)).build();
         } catch (CustomException exception) {

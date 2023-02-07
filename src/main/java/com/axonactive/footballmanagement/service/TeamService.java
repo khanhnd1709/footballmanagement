@@ -2,6 +2,7 @@ package com.axonactive.footballmanagement.service;
 
 import com.axonactive.footballmanagement.dao.TeamDao;
 import com.axonactive.footballmanagement.entities.TeamEntity;
+import com.axonactive.footballmanagement.rest.request.TeamRequest;
 import com.axonactive.footballmanagement.service.dto.TeamDto;
 import com.axonactive.footballmanagement.service.mapper.TeamMapper;
 
@@ -30,12 +31,12 @@ public class TeamService extends GenericService<TeamEntity> {
         return teamMapper.toDtos(teamDao.findAll());
     }
 
-    public TeamDto createTeam(TeamEntity team) {
-        return teamMapper.toDto(create(team));
+    public TeamDto createTeam(TeamRequest team) {
+        return teamMapper.toDto(create(teamMapper.toEntity(team)));
     }
 
-    public TeamDto updateTeam(Long id, TeamEntity team) {
-        return teamMapper.toDto(update(id, team));
+    public TeamDto updateTeam(Long id, TeamRequest team) {
+        return teamMapper.toDto(update(id, teamMapper.toEntity(team)));
     }
 
     public void deleteTeam(Long id) {
