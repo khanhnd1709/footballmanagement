@@ -21,6 +21,6 @@ public class StadiumEntity implements IGenericEntity {
     private String name;
 
     @Size(max = 200)
-    @Column(length = 200, unique = true)
+    @Column(length = 200)
     private String address;
 }

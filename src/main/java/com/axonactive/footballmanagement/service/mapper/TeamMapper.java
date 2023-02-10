@@ -9,11 +9,8 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 @Mapper(componentModel = "cdi", uses = {StadiumMapper.class})
-public interface TeamMapper {
+public interface TeamMapper extends GenericMapper<TeamEntity, TeamDto> {
 
-    TeamDto toDto(TeamEntity team);
-
-    List<TeamDto> toDtos(List<TeamEntity> team);
-
+    @Mapping(source = "stadiumId", target = "stadium")
     TeamEntity toEntity(TeamRequest teamRequest);
 }

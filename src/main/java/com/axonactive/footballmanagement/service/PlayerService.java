@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Stateless
-public class PlayerService extends GenericService<PlayerEntity> {
+public class PlayerService extends GenericService<PlayerEntity, PlayerDto> {
 
     @Inject
     private TeamService teamService;
@@ -33,7 +33,7 @@ public class PlayerService extends GenericService<PlayerEntity> {
     private PlayerMapper playerMapper;
 
     public PlayerService() {
-        super(PlayerEntity.class);
+        super(PlayerEntity.class, PlayerDto.class);
     }
 
     public PlayerDto findById_ToPlayerDto(Long id) {

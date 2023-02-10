@@ -1,5 +1,6 @@
 package com.axonactive.footballmanagement.rest;
 
+import com.axonactive.footballmanagement.entities.GameEntity;
 import com.axonactive.footballmanagement.service.GameService;
 import com.axonactive.footballmanagement.service.dto.GameDto;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @Path(GameResource.PATH)
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces(MediaType.APPLICATION_JSON)
-public class GameResource {
+public class GameResource extends GenericResource<GameEntity, GameDto> {
     public static final String PATH = "games";
 
     @Inject

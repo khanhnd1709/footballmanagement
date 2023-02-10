@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import java.util.List;
 
 @Stateless
-public class LeagueService extends GenericService<LeagueEntity> {
+public class LeagueService extends GenericService<LeagueEntity, LeagueDto> {
 
     @Inject
     private LeagueDao leagueDao;
@@ -19,7 +19,7 @@ public class LeagueService extends GenericService<LeagueEntity> {
     private LeagueMapper leagueMapper;
 
     public LeagueService() {
-        super(LeagueEntity.class);
+        super(LeagueEntity.class, LeagueDto.class);
     }
 
     public LeagueDto findById_ToLeagueDto(Long id) {

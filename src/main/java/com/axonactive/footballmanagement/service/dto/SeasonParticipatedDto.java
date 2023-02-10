@@ -7,8 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class StadiumDto implements IGenericDto {
+public class SeasonParticipatedDto implements IGenericDto {
     private Long id;
-    private String name;
-    private String address;
+    private TeamDto team;
+    private Integer rank;
+    private RecordDto record;
 }

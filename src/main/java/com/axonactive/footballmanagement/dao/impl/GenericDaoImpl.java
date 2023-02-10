@@ -21,7 +21,7 @@ public class GenericDaoImpl<T extends IGenericEntity> implements GenericDao<T> {
 
     @Override
     public Optional<T> findById(Object id) {
-        return Optional.of(em.find(entityClass, id));
+        return Optional.ofNullable(em.find(entityClass, id));
     }
 
     @Override

@@ -11,39 +11,20 @@ import javax.inject.Inject;
 import java.util.List;
 
 @Stateless
-public class TeamService extends GenericService<TeamEntity> {
-
-    @Inject
-    private TeamDao teamDao;
+public class TeamService extends GenericService<TeamEntity, TeamDto> {
 
     @Inject
     private TeamMapper teamMapper;
 
     public TeamService() {
-        super(TeamEntity.class);
+        super(TeamEntity.class, TeamDto.class);
     }
 
-    public TeamDto findById_ToTeamDto(Long id) {
-        return teamMapper.toDto(findById(id));
-    }
-
-    public List<TeamDto> findAll_ToTeamDto() {
-        return teamMapper.toDtos(teamDao.findAll());
-    }
-
-    public TeamDto createTeam(TeamRequest team) {
+    public TeamDto create_toDto(TeamRequest team) {
         return teamMapper.toDto(create(teamMapper.toEntity(team)));
     }
 
-    public TeamDto updateTeam(Long id, TeamRequest team) {
+    public TeamDto update_toDto(Long id, TeamRequest team) {
         return teamMapper.toDto(update(id, teamMapper.toEntity(team)));
-    }
-
-    public void deleteTeam(Long id) {
-        delete(id);
-    }
-
-    public void validateGeneralAddRequest(List<?> objects) {
-        checkRequestEmpty(objects);
     }
 }

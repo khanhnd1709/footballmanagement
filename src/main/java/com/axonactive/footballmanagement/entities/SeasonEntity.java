@@ -19,7 +19,7 @@ public class SeasonEntity implements IGenericEntity {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "league_id")
-    private LeagueEntity leagueEntity;
+    private LeagueEntity league;
 
     @OneToMany(mappedBy = "season")
     private List<SeasonParticipatedEntity> teams;

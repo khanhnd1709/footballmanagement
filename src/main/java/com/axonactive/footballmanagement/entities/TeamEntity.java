@@ -21,7 +21,7 @@ public class TeamEntity implements IGenericEntity {
     private Long id;
 
     @Size(max = 50)
-    @Column(length = 50, nullable = false, unique = true)
+    @Column(length = 50, nullable = false)
     @NotNull
     private String name;
 

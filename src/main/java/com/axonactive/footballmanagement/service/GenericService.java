@@ -5,6 +5,10 @@ import com.axonactive.footballmanagement.entities.IGenericEntity;
 import com.axonactive.footballmanagement.entities.PlayerEntity;
 import com.axonactive.footballmanagement.rest.exception.CustomException;
 import com.axonactive.footballmanagement.rest.exception.errormessages.ErrorConstant;
+import com.axonactive.footballmanagement.rest.request.TeamRequest;
+import com.axonactive.footballmanagement.service.dto.IGenericDto;
+import com.axonactive.footballmanagement.service.dto.TeamDto;
+import com.axonactive.footballmanagement.service.mapper.GenericMapper;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -12,16 +16,21 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 
-public class GenericService<T extends IGenericEntity> {
+public class GenericService<T extends IGenericEntity, S extends IGenericDto> {
     protected final Class<T> entityClass;
+    protected final Class<S> dtoClass;
     protected final String entityClassName;
+
+    @Inject
+    protected GenericMapper<T, S> genericMapper;
 
     @Inject
     private GenericDao<T> genericDao;
 
-    public GenericService(Class<T> entityClass) {
+    public GenericService(Class<T> entityClass, Class<S> dtoClass) {
         this.entityClass = entityClass;
         this.entityClassName = entityClass.getSimpleName().replace("Entity", "");
+        this.dtoClass = dtoClass;
     }
 
     public T findById(Object id) {
@@ -48,6 +57,22 @@ public class GenericService<T extends IGenericEntity> {
 
     public void delete(Object id) {
         genericDao.remove(findById(id));
+    }
+
+    public S findById_toDto(Long id) {
+        return genericMapper.toDto(findById(id));
+    }
+
+    public List<S> findAll_toDto() {
+        return genericMapper.toDtos(findAll());
+    }
+
+    public S create_toDto(T entity) {
+        return genericMapper.toDto(create(entity));
+    }
+
+    public S update_toDto(Long id, T entity) {
+        return genericMapper.toDto(update(id, entity));
     }
 
     protected void checkNullId(T entity) {

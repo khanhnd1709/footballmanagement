@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class GoalDto {
+public class GoalDto implements IGenericDto {
     private Long socrePlayerId;
     private GoalTypeEnum goalType;
     private Long assistPlayerId;

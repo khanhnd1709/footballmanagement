@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 @Mapper(componentModel = "cdi")
-public interface GoalMapper {
+public interface GoalMapper extends GenericMapper<GoalEntity, GoalDto> {
     @Mapping(source = "scorePlayer.id", target = "socrePlayerId")
     @Mapping(source = "assistPlayer.id", target = "assistPlayerId")
     @Mapping(source = "team.name", target = "teamName")
@@ -16,6 +16,4 @@ public interface GoalMapper {
     @Mapping(source = "timeOfGoal.sec", target = "sec")
     @Mapping(source = "timeOfGoal.extraMin", target = "extraMin")
     GoalDto toDto(GoalEntity goalEntity);
-
-    List<GoalDto> toDtos(List<GoalEntity> goalEntities);
 }

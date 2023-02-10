@@ -9,9 +9,6 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 @Mapper(componentModel = "cdi")
-public interface PlayerMapper {
+public interface PlayerMapper extends GenericMapper<PlayerEntity, PlayerDto> {
 
-    PlayerDto toDto(PlayerEntity player);
-
-    List<PlayerDto> toDtos(List<PlayerEntity> player);
 }

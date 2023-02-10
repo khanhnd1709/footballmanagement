@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Stateless
-public class TeamPlayedService extends GenericService<TeamPlayedEntity> {
+public class TeamPlayedService extends GenericService<TeamPlayedEntity, PlayerDto> {
 
     @Inject
     private PlayerService playerService;
@@ -31,7 +31,7 @@ public class TeamPlayedService extends GenericService<TeamPlayedEntity> {
     private TeamPlayedMapper teamPlayedMapper;
 
     public TeamPlayedService() {
-        super(TeamPlayedEntity.class);
+        super(TeamPlayedEntity.class, PlayerDto.class);
     }
 
     public List<TeamPlayedEntity> findAllTeamPlayedByPlayerId(Long playerId) {

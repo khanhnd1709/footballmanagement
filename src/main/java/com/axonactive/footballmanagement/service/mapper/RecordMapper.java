@@ -8,7 +8,4 @@ import java.util.List;
 
 @Mapper(componentModel = "cdi")
 public interface RecordMapper {
-    TeamDto toDto(TeamEntity team);
-
-    List<TeamDto> toDtos(List<TeamEntity> team);
 }

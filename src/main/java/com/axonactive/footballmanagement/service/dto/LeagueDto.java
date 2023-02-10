@@ -1,8 +1,14 @@
 package com.axonactive.footballmanagement.service.dto;
 
 import com.axonactive.footballmanagement.enums.NationalityEnum;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public class LeagueDto {
+@Getter
+@Setter
+@NoArgsConstructor
+public class LeagueDto implements IGenericDto {
     private Long id;
     private String name;
     private NationalityEnum nationality;

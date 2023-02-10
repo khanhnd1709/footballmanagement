@@ -10,4 +10,5 @@ public class TeamRequest {
     private Long id;
     @NotNull(message = "Team name can't be null")
     private String name;
+    private Long stadiumId;
 }

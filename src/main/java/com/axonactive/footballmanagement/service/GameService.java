@@ -13,7 +13,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Stateless
-public class GameService extends GenericService<GameEntity> {
+public class GameService extends GenericService<GameEntity, GameDto> {
     @Inject
     private GameDao gameDao;
 
@@ -21,7 +21,7 @@ public class GameService extends GenericService<GameEntity> {
     private GameMapper gameMapper;
 
     public GameService() {
-        super(GameEntity.class);
+        super(GameEntity.class, GameDto.class);
     }
 
     public List<GameDto> findGamesByDate(LocalDate fromLocalDate, LocalDate toLocalDate) {

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PlayerDto {
+public class PlayerDto implements IGenericDto {
     private Long id;
     private String name;
     private LocalDate dob;
