@@ -41,5 +41,5 @@ public class TeamPlayedRequest {
 
     private LocalDate leaveDate;
 
-    private Boolean isActive;
+    private Boolean isActive = false;
 }

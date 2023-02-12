@@ -1,8 +1,10 @@
 package com.axonactive.footballmanagement.rest;
 
+import com.axonactive.footballmanagement.entities.TeamPlayedEntity;
 import com.axonactive.footballmanagement.rest.exception.CustomException;
 import com.axonactive.footballmanagement.rest.request.TeamPlayedRequest;
 import com.axonactive.footballmanagement.service.TeamPlayedService;
+import com.axonactive.footballmanagement.service.dto.PlayerDto;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -13,8 +15,8 @@ import javax.ws.rs.core.Response;
 @Path(TeamPlayedResource.PATH)
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces(MediaType.APPLICATION_JSON)
-public class TeamPlayedResource {
-    public static final String PATH = "teams/{teamId}/players";
+public class TeamPlayedResource extends GenericResource<TeamPlayedEntity, PlayerDto> {
+    public static final String PATH = TeamResource.PATH + "/{teamId}/" + PlayerResource.PATH;
 
     @Inject
     private TeamPlayedService teamPlayedService;
@@ -36,11 +38,11 @@ public class TeamPlayedResource {
 
     @POST
     @Path("{playerId}")
-    public Response createTeamPlayed(@PathParam("teamId") Long teamId,
+    public Response create(@PathParam("teamId") Long teamId,
                                      @PathParam("playerId") Long playerId,
                                      @Valid TeamPlayedRequest teamPlayedRequest) {
         try {
-            return Response.status(Response.Status.CREATED).entity(teamPlayedService.createTeamPlayed(teamId, playerId, teamPlayedRequest)).build();
+            return Response.status(Response.Status.CREATED).entity(teamPlayedService.create_toDto(teamId, playerId, teamPlayedRequest)).build();
         } catch (CustomException exception) {
             return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
         }

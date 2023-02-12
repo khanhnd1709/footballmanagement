@@ -8,6 +8,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Data
@@ -22,8 +23,6 @@ public class LeagueEntity implements IGenericEntity {
     @NotNull
     private String name;
 
-    @Size(max = 50)
-    @Column(length = 50)
     @Enumerated(value = EnumType.STRING)
     private NationalityEnum nationality;
 
@@ -32,14 +31,18 @@ public class LeagueEntity implements IGenericEntity {
     @Column(columnDefinition = "integer default 2")
     private Integer numberOfTeams;
 
-    @Min(value = 30)
-    @Column(columnDefinition = "integer default 30")
+    @Min(value = 20)
+    @Column(columnDefinition = "integer default 20")
     private Integer maxActivePLayerEachTeam;
 
     @Min(value = 20)
     @Column(columnDefinition = "integer default 20")
     private Integer maxPLayerOneTeamEachGame;
 
-    @PositiveOrZero
+    @Min(value = 3)
+    @Column(columnDefinition = "integer default 3")
     private Integer maxNumberOfSubstituteEachGame;
+
+    @OneToMany(mappedBy = "league")
+    private List<SeasonEntity> seasons;
 }

@@ -2,18 +2,15 @@ package com.axonactive.footballmanagement.service;
 
 import com.axonactive.footballmanagement.dao.GenericDao;
 import com.axonactive.footballmanagement.entities.IGenericEntity;
-import com.axonactive.footballmanagement.entities.PlayerEntity;
 import com.axonactive.footballmanagement.rest.exception.CustomException;
 import com.axonactive.footballmanagement.rest.exception.errormessages.ErrorConstant;
-import com.axonactive.footballmanagement.rest.request.TeamRequest;
 import com.axonactive.footballmanagement.service.dto.IGenericDto;
-import com.axonactive.footballmanagement.service.dto.TeamDto;
 import com.axonactive.footballmanagement.service.mapper.GenericMapper;
 
-import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Optional;
 
 
 public class GenericService<T extends IGenericEntity, S extends IGenericDto> {

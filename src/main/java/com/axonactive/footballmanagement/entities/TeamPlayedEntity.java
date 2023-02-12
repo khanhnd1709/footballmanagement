@@ -52,6 +52,5 @@ public class TeamPlayedEntity implements IGenericEntity {
     @PastOrPresent
     private LocalDate leaveDate;
 
-    @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean isActive;
 }

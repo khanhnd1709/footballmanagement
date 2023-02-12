@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SeasonParticipatedDto implements IGenericDto {
     private Long id;
+    private SeasonDto season;
     private TeamDto team;
     private Integer rank;
     private RecordDto record;
