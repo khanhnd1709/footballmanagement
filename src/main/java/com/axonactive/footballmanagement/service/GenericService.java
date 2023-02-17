@@ -8,6 +8,7 @@ import com.axonactive.footballmanagement.service.dto.IGenericDto;
 import com.axonactive.footballmanagement.service.mapper.GenericMapper;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +47,12 @@ public class GenericService<T extends IGenericEntity, S extends IGenericDto> {
         return entity;
     }
 
+    @Transactional(rollbackOn = Exception.class)
+    public List<T> create(List<T> entities) {
+        entities.forEach(this::create);
+        return entities;
+    }
+
     public T update(Object id, T entity) {
         checkIdPathParamEqualIdBody(id, entity);
         findById(id);
@@ -64,8 +71,8 @@ public class GenericService<T extends IGenericEntity, S extends IGenericDto> {
         return genericMapper.toDtos(findAll());
     }
 
-    public S create_toDto(T entity) {
-        return genericMapper.toDto(create(entity));
+    public List<S> create_toDto(List<T> entities) {
+        return genericMapper.toDtos(create(entities));
     }
 
     public S update_toDto(Long id, T entity) {

@@ -22,23 +22,4 @@ public class LeagueService extends GenericService<LeagueEntity, LeagueDto> {
         super(LeagueEntity.class, LeagueDto.class);
     }
 
-    public LeagueDto findById_ToLeagueDto(Long id) {
-        return leagueMapper.toDto(findById(id));
-    }
-
-    public List<LeagueDto> findAll_ToLeagueDto() {
-        return leagueMapper.toDtos(leagueDao.findAll());
-    }
-
-    public LeagueDto createLeague(LeagueEntity league) {
-        return leagueMapper.toDto(create(league));
-    }
-
-    public LeagueDto updateLeague(Long id, LeagueEntity league) {
-        return leagueMapper.toDto(update(id, league));
-    }
-
-    public void deleteLeague(Long id) {
-        delete(id);
-    }
 }

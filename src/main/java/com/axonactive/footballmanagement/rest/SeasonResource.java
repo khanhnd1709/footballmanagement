@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path(SeasonResource.PATH)
 @Consumes({MediaType.APPLICATION_JSON})
@@ -22,10 +23,15 @@ public class SeasonResource extends GenericResource<SeasonEntity, SeasonDto> {
     @Inject
     private SeasonService seasonService;
 
+    @GET
+    public Response findAll(@PathParam("leagueId") Long leagueId)  {
+        return Response.ok(seasonService.findAll_toDto(leagueId)).build();
+    }
+
     @POST
-    public Response create(@PathParam("leagueId") Long leagueId, @Valid SeasonRequest season) {
+    public Response create(@PathParam("leagueId") Long leagueId, @Valid List<SeasonRequest> seasonRequestList) {
         try {
-            return Response.status(Response.Status.CREATED).entity(seasonService.create_toDto(leagueId, season)).build();
+            return Response.status(Response.Status.CREATED).entity(seasonService.create_toDto(leagueId, seasonRequestList)).build();
         } catch (CustomException exception) {
             return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
         }
@@ -35,7 +41,7 @@ public class SeasonResource extends GenericResource<SeasonEntity, SeasonDto> {
     @Path("{id}")
     public Response update(@PathParam("id") Long id,  @PathParam("leagueId") Long leagueId, @Valid SeasonRequest season) {
         try {
-            return Response.ok().entity(seasonService.update_toDto(id, leagueId, season)).build();
+            return Response.ok(seasonService.update_toDto(id, leagueId, season)).build();
         } catch (CustomException exception) {
             return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
         }

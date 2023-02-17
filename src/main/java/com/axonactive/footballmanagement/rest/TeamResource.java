@@ -3,8 +3,6 @@ package com.axonactive.footballmanagement.rest;
 import com.axonactive.footballmanagement.entities.TeamEntity;
 import com.axonactive.footballmanagement.rest.exception.CustomException;
 import com.axonactive.footballmanagement.rest.request.TeamRequest;
-import com.axonactive.footballmanagement.service.PlayerService;
-import com.axonactive.footballmanagement.service.TeamPlayedService;
 import com.axonactive.footballmanagement.service.TeamService;
 import com.axonactive.footballmanagement.service.dto.TeamDto;
 
@@ -13,6 +11,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 
 @Path(TeamResource.PATH)
@@ -41,9 +40,9 @@ public class TeamResource extends GenericResource<TeamEntity, TeamDto> {
 //    }
 //
     @POST
-    public Response create(@Valid TeamRequest team) {
+    public Response create_fromRequest(@Valid List<TeamRequest> teamRequestList) {
         try {
-            return Response.status(Response.Status.CREATED).entity(teamService.create_toDto(team)).build();
+            return Response.status(Response.Status.CREATED).entity(teamService.create_fromRequest_toDto(teamRequestList)).build();
         } catch (CustomException exception) {
             return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
         }
@@ -51,9 +50,9 @@ public class TeamResource extends GenericResource<TeamEntity, TeamDto> {
 
     @PUT
     @Path("{id}")
-    public Response update(@PathParam("id") Long id, @Valid TeamRequest team) {
+    public Response update(@PathParam("id") Long id, @Valid TeamRequest teamRequest) {
         try {
-            return Response.ok().entity(teamService.update_toDto(id, team)).build();
+            return Response.ok().entity(teamService.update_fromRequest_toDto(id, teamRequest)).build();
         } catch (CustomException exception) {
             return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
         }

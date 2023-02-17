@@ -10,6 +10,7 @@ public class ErrorConstant {
     public static final String MSG_LEAGUE_IDPATHPARAM_CONFLICT_IDBODY = "Different league id between pathparam and request body";
     public static final String MSG_ID_PROVIDED_IN_CREATE_METHOD = "Not allow provide id in create method";
     public static final String MSG_EXIST_CURRENT_PLAYER = "Player is playing for a team";
+    public static final String MSG_LEAGUE_NOT_END_YET = "League isn't over yet";
     public static final String MSG_LEAVEDATE_IS_BEFORE_ATTENDDATE = "Leave date is before attend date";
     public static final String MSG_ENDDATE_IS_BEFORE_STARTDATE = "End date is before start date";
     public static final String MSG_ATTENDDATE_IS_BEFORE_LAST_LEAVEDATE = "Attend date is before last leave date";

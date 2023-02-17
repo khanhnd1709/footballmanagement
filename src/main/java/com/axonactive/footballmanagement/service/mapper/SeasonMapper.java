@@ -15,5 +15,7 @@ import java.util.List;
 @Mapper(componentModel = "cdi", uses = {LeagueMapper.class})
 public interface SeasonMapper extends GenericMapper<SeasonEntity, SeasonDto> {
     @Mapping(source = "leagueId", target = "league")
-    SeasonEntity toEntity(SeasonRequest season);
+    SeasonEntity toEntity(SeasonRequest seasonRequest);
+
+    List<SeasonEntity> toEntities(List<SeasonRequest> seasonRequestList);
 }

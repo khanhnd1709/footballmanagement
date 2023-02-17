@@ -13,4 +13,6 @@ public interface TeamMapper extends GenericMapper<TeamEntity, TeamDto> {
 
     @Mapping(source = "stadiumId", target = "stadium")
     TeamEntity toEntity(TeamRequest teamRequest);
+
+    List<TeamEntity> toEntities(List<TeamRequest> teamRequest);
 }

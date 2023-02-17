@@ -10,6 +10,7 @@ import com.axonactive.footballmanagement.service.mapper.TeamPlayedMapper;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
 import java.time.LocalDate;
 import java.util.*;
@@ -65,22 +66,39 @@ public class TeamPlayedService extends GenericService<TeamPlayedEntity, PlayerDt
                 .collect(Collectors.toList()));
     }
 
-    public PlayerDto create_toDto(Long teamId, Long playerId, TeamPlayedRequest teamPlayedRequest) {
+    @Transactional(rollbackOn = Exception.class)
+    public List<PlayerDto> create_fromRequest_toDto(Long teamId, List<TeamPlayedRequest> teamPlayedRequestList) {
+
+        return create_toDto(teamPlayedRequestList.stream()
+                .map(teamPlayedRequest -> {
+                    checkTeamIdPathParamEqualTeamIdBody(teamId, teamPlayedRequest);
+                    checkLeaveDateNotIsBeforeAttendDate(teamPlayedRequest);
+                    checkValidDateRange(teamPlayedRequest);
+                    // If isActive --> check if teamId join which league --> then find maxPLayerEachTeam of League
+                    checkMaxActivePLayersByTeamIdBasedOnSeasonParticipated(teamId, teamPlayedRequest);
+
+                    TeamPlayedEntity teamPlayedEntity = teamPlayedMapper.toEntity(teamPlayedRequest);
+                    teamPlayedEntity.setPlayer(playerService.findById(teamPlayedRequest.getPlayerId()));
+                    teamPlayedEntity.setTeam(teamService.findById(teamId));
+                    return teamPlayedEntity;
+                })
+                .collect(Collectors.toList()));
+    }
+
+    public PlayerDto update_fromRequest_toDto(Long teamPlayedId, Long teamId, TeamPlayedRequest teamPlayedRequest) {
         checkTeamIdPathParamEqualTeamIdBody(teamId, teamPlayedRequest);
-        checkPlayerIdPathParamEqualPlayerIdBody(playerId, teamPlayedRequest);
-
         checkLeaveDateNotIsBeforeAttendDate(teamPlayedRequest);
-
         checkValidDateRange(teamPlayedRequest);
-
         // If isActive --> check if teamId join which league --> then find maxPLayerEachTeam of League
         checkMaxActivePLayersByTeamIdBasedOnSeasonParticipated(teamId, teamPlayedRequest);
 
-        TeamPlayedEntity teamPlayed = teamPlayedMapper.toEntity(teamPlayedRequest);
-        teamPlayed.setPlayer(playerService.findById(playerId));
-        teamPlayed.setTeam(teamService.findById(teamId));
-        return teamPlayedMapper.toDto(create(teamPlayed));
+        TeamPlayedEntity teamPlayedEntity = teamPlayedMapper.toEntity(teamPlayedRequest);
+        teamPlayedEntity.setPlayer(playerService.findById(teamPlayedRequest.getPlayerId()));
+        teamPlayedEntity.setTeam(teamService.findById(teamId));
+        return update_toDto(teamPlayedId, );
     }
+
+
 
     public List<TeamPlayedEntity> sortByAttendDate(List<TeamPlayedEntity> teamPlayedEntities, boolean ascending) {
         List<TeamPlayedEntity> teamPlayeds = teamPlayedEntities.stream()
@@ -90,10 +108,15 @@ public class TeamPlayedService extends GenericService<TeamPlayedEntity, PlayerDt
         return teamPlayeds;
     }
 
-    private void checkPlayerIdPathParamEqualPlayerIdBody(Long playerId, TeamPlayedRequest teamPlayedRequest) {
-        if (!teamPlayedRequest.getPlayerId().equals(playerId))
-            throw new CustomException(ErrorConstant.MSG_PLAYER_IDPATHPARAM_CONFLICT_IDBODY, Response.Status.BAD_REQUEST);
-    }
+//    private void checkTeamPlayedIdPathParamEqualTeamPlayedIdBody(Long teamPlayedId, TeamPlayedRequest teamPlayedRequest) {
+//        if (!teamPlayedRequest.getId().equals(teamPlayedId))
+//            throw new CustomException(ErrorConstant.MSG_PLAYER_IDPATHPARAM_CONFLICT_IDBODY, Response.Status.BAD_REQUEST);
+//    }
+//
+//    private void checkPlayerIdPathParamEqualPlayerIdBody(Long playerId, TeamPlayedRequest teamPlayedRequest) {
+//        if (!teamPlayedRequest.getPlayerId().equals(playerId))
+//            throw new CustomException(ErrorConstant.MSG_PLAYER_IDPATHPARAM_CONFLICT_IDBODY, Response.Status.BAD_REQUEST);
+//    }
 
     private void checkTeamIdPathParamEqualTeamIdBody(Long teamId, TeamPlayedRequest teamPlayedRequest) {
         if (!teamPlayedRequest.getTeamId().equals(teamId))
@@ -115,20 +138,17 @@ public class TeamPlayedService extends GenericService<TeamPlayedEntity, PlayerDt
         }
         else {
             teamPlayeds.forEach(teamPlayed -> {
-                if ((teamPlayed.getAttendDate().isBefore(attendDate) && teamPlayed.getLeaveDate().isAfter(attendDate))
-                        || (teamPlayed.getAttendDate().isBefore(leaveDate) && teamPlayed.getLeaveDate().isAfter(leaveDate)))
-                    throw new CustomException(ErrorConstant.MSG_EXIST_OBJECT_ON_DATE, Response.Status.BAD_REQUEST);
+                if (teamPlayed.getLeaveDate() == null) {
+
+                }
+                else {
+                    if ((teamPlayed.getAttendDate().isBefore(attendDate) && teamPlayed.getLeaveDate().isAfter(attendDate))
+                            || (teamPlayed.getAttendDate().isBefore(leaveDate) && teamPlayed.getLeaveDate().isAfter(leaveDate)))
+                        throw new CustomException(ErrorConstant.MSG_EXIST_OBJECT_ON_DATE, Response.Status.BAD_REQUEST);
+                }
 
             });
         }
-    }
-
-    private void checkValidDate(LocalDate date, List<TeamPlayedEntity> teamPlayedEntities) {
-        teamPlayedEntities.forEach(teamPlayed -> {
-            if (teamPlayed.getAttendDate().isBefore(date) && teamPlayed.getLeaveDate().isAfter(date))
-                throw new CustomException(ErrorConstant.MSG_EXIST_OBJECT_ON_DATE, Response.Status.BAD_REQUEST);
-
-        });
     }
 
     private void checkLeaveDateNotIsBeforeAttendDate(TeamPlayedRequest teamPlayedRequest) {

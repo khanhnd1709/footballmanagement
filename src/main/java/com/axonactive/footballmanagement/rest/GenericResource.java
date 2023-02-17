@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 public class GenericResource<T extends IGenericEntity, S extends IGenericDto> {
 
@@ -26,16 +27,16 @@ public class GenericResource<T extends IGenericEntity, S extends IGenericDto> {
     @Path("{id}")
     public Response findById(Long id) {
         try {
-            return Response.ok().entity(genericService.findById_toDto(id)).build();
+            return Response.ok(genericService.findById_toDto(id)).build();
         } catch (CustomException exception) {
             return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
         }
     }
 
     @POST
-    public Response create(@Valid T entity) {
+    public Response create(@Valid List<T> entities) {
         try {
-            return Response.status(Response.Status.CREATED).entity(genericService.create_toDto(entity)).build();
+            return Response.status(Response.Status.CREATED).entity(genericService.create_toDto(entities)).build();
         } catch (CustomException exception) {
             return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
         }

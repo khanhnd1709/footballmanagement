@@ -11,4 +11,5 @@ import java.util.List;
 @Mapper(componentModel = "cdi", uses = {PlayerMapper.class, TeamMapper.class})
 public interface TeamPlayedMapper extends GenericMapper<TeamPlayedEntity, PlayerDto> {
     TeamPlayedEntity toEntity(TeamPlayedRequest teamPlayedRequest);
+    List<TeamPlayedEntity> toEntities(List<TeamPlayedRequest> teamPlayedRequestList);
 }
