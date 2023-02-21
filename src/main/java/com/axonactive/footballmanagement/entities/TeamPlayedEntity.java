@@ -52,5 +52,7 @@ public class TeamPlayedEntity implements IGenericEntity {
     @PastOrPresent
     private LocalDate leaveDate;
 
+    private Boolean isCurrent;
+
     private Boolean isActive;
 }

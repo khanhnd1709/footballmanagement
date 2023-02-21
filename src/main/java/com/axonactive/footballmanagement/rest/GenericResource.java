@@ -33,24 +33,24 @@ public class GenericResource<T extends IGenericEntity, S extends IGenericDto> {
         }
     }
 
-    @POST
-    public Response create(@Valid List<T> entities) {
-        try {
-            return Response.status(Response.Status.CREATED).entity(genericService.create_toDto(entities)).build();
-        } catch (CustomException exception) {
-            return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
-        }
-    }
-
-    @PUT
-    @Path("{id}")
-    public Response update(@PathParam("id") Long id, @Valid T entity) {
-        try {
-            return Response.ok().entity(genericService.update_toDto(id, entity)).build();
-        } catch (CustomException exception) {
-            return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
-        }
-    }
+//    @POST
+//    public Response create(@Valid List<T> entities) {
+//        try {
+//            return Response.status(Response.Status.CREATED).entity(genericService.create_toDto(entities)).build();
+//        } catch (CustomException exception) {
+//            return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
+//        }
+//    }
+//
+//    @PUT
+//    @Path("{id}")
+//    public Response update(@PathParam("id") Long id, @Valid T entity) {
+//        try {
+//            return Response.ok().entity(genericService.update_toDto(id, entity)).build();
+//        } catch (CustomException exception) {
+//            return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
+//        }
+//    }
 
     @DELETE
     @Path("{id}")

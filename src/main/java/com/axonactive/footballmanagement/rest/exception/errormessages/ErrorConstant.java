@@ -14,6 +14,8 @@ public class ErrorConstant {
     public static final String MSG_LEAVEDATE_IS_BEFORE_ATTENDDATE = "Leave date is before attend date";
     public static final String MSG_ENDDATE_IS_BEFORE_STARTDATE = "End date is before start date";
     public static final String MSG_ATTENDDATE_IS_BEFORE_LAST_LEAVEDATE = "Attend date is before last leave date";
+    public static final String MSG_INCONSISTENT_ISCURRENT_DATE_RANGE = "Inconsistent isCurrent and date range";
+    public static final String MSG_LEAVEDATE_NOT_NULL = "Leave date must be null";
     public static final String MSG_STARTDATE_IS_BEFORE_LAST_ENDDATE = "Start date is before last end date";
     public static final String MSG_MAX_ACTIVE_PLAYERS = "Number of active players reach maximum";
     public static final String MSG_EXIST_OBJECT_ON_DATE = "There is a record on this date";

@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path(LeagueResource.PATH)
 @Consumes({MediaType.APPLICATION_JSON})
@@ -20,6 +21,27 @@ import javax.ws.rs.core.Response;
 public class LeagueResource extends GenericResource<LeagueEntity, LeagueDto> {
     public static final String PATH = "leagues";
 
+    @Inject
+    private LeagueService leagueService;
+
+    @POST
+    public Response create(@Valid List<LeagueEntity> leagueEntityList) {
+        try {
+            return Response.status(Response.Status.CREATED).entity(leagueService.create_toDto(leagueEntityList)).build();
+        } catch (CustomException exception) {
+            return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
+        }
+    }
+
+    @PUT
+    @Path("{id}")
+    public Response update(@PathParam("id") Long id, @Valid LeagueEntity leagueEntity) {
+        try {
+            return Response.ok().entity(leagueService.update_toDto(id, leagueEntity)).build();
+        } catch (CustomException exception) {
+            return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
+        }
+    }
 //    @Inject
 //    private LeagueService leagueService;
 //

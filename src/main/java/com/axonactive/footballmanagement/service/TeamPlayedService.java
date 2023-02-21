@@ -85,18 +85,18 @@ public class TeamPlayedService extends GenericService<TeamPlayedEntity, PlayerDt
                 .collect(Collectors.toList()));
     }
 
-    public PlayerDto update_fromRequest_toDto(Long teamPlayedId, Long teamId, TeamPlayedRequest teamPlayedRequest) {
-        checkTeamIdPathParamEqualTeamIdBody(teamId, teamPlayedRequest);
-        checkLeaveDateNotIsBeforeAttendDate(teamPlayedRequest);
-        checkValidDateRange(teamPlayedRequest);
-        // If isActive --> check if teamId join which league --> then find maxPLayerEachTeam of League
-        checkMaxActivePLayersByTeamIdBasedOnSeasonParticipated(teamId, teamPlayedRequest);
-
-        TeamPlayedEntity teamPlayedEntity = teamPlayedMapper.toEntity(teamPlayedRequest);
-        teamPlayedEntity.setPlayer(playerService.findById(teamPlayedRequest.getPlayerId()));
-        teamPlayedEntity.setTeam(teamService.findById(teamId));
-        return update_toDto(teamPlayedId, );
-    }
+//    public PlayerDto update_fromRequest_toDto(Long teamPlayedId, Long teamId, TeamPlayedRequest teamPlayedRequest) {
+//        checkTeamIdPathParamEqualTeamIdBody(teamId, teamPlayedRequest);
+//        checkLeaveDateNotIsBeforeAttendDate(teamPlayedRequest);
+//        checkValidDateRange(teamPlayedRequest);
+//        // If isActive --> check if teamId join which league --> then find maxPLayerEachTeam of League
+//        checkMaxActivePLayersByTeamIdBasedOnSeasonParticipated(teamId, teamPlayedRequest);
+//
+//        TeamPlayedEntity teamPlayedEntity = teamPlayedMapper.toEntity(teamPlayedRequest);
+//        teamPlayedEntity.setPlayer(playerService.findById(teamPlayedRequest.getPlayerId()));
+//        teamPlayedEntity.setTeam(teamService.findById(teamId));
+//        return update_toDto(teamPlayedId, );
+//    }
 
 
 
@@ -148,6 +148,17 @@ public class TeamPlayedService extends GenericService<TeamPlayedEntity, PlayerDt
                 }
 
             });
+        }
+    }
+
+    private void checkCorrectIsCurrent(TeamPlayedRequest teamPlayedRequest) {
+        LocalDate today = LocalDate.now();
+        if (teamPlayedRequest.getIsCurrent()) {
+            if (teamPlayedRequest.getLeaveDate() != null)
+                throw new CustomException(ErrorConstant.MSG_LEAVEDATE_NOT_NULL, Response.Status.BAD_REQUEST);
+        }
+        else {
+
         }
     }
 

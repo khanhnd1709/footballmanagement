@@ -37,9 +37,13 @@ public class TeamPlayedRequest {
     private PositionEnum position;
 
     @NotNull
+    @PastOrPresent
     private LocalDate attendDate;
 
+    @PastOrPresent
     private LocalDate leaveDate;
+
+    private Boolean isCurrent = false;
 
     private Boolean isActive = false;
 }

@@ -1,7 +1,9 @@
 package com.axonactive.footballmanagement.rest;
 
+import com.axonactive.footballmanagement.entities.LeagueEntity;
 import com.axonactive.footballmanagement.entities.PlayerEntity;
 import com.axonactive.footballmanagement.rest.exception.CustomException;
+import com.axonactive.footballmanagement.service.LeagueService;
 import com.axonactive.footballmanagement.service.PlayerService;
 import com.axonactive.footballmanagement.service.TeamPlayedService;
 import com.axonactive.footballmanagement.service.dto.PlayerDto;
@@ -12,6 +14,7 @@ import javax.validation.constraints.PositiveOrZero;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path(PlayerResource.PATH)
 @Consumes({MediaType.APPLICATION_JSON})
@@ -19,6 +22,27 @@ import javax.ws.rs.core.Response;
 public class PlayerResource extends GenericResource<PlayerEntity, PlayerDto> {
     public static final String PATH = "players";
 
+    @Inject
+    private PlayerService playerService;
+
+    @POST
+    public Response create(@Valid List<PlayerEntity> playerEntities) {
+        try {
+            return Response.status(Response.Status.CREATED).entity(playerService.create_toDto(playerEntities)).build();
+        } catch (CustomException exception) {
+            return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
+        }
+    }
+
+    @PUT
+    @Path("{id}")
+    public Response update(@PathParam("id") Long id, @Valid PlayerEntity playerEntity) {
+        try {
+            return Response.ok().entity(playerService.update_toDto(id, playerEntity)).build();
+        } catch (CustomException exception) {
+            return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
+        }
+    }
 //    @Inject
 //    private TeamPlayedService teamPlayedService;
 //
