@@ -38,9 +38,19 @@ public class TeamPlayedResource extends GenericResource<TeamPlayedEntity, Player
     }
 
     @POST
-    public Response create(Long teamId, @Valid List<TeamPlayedRequest> teamPlayedRequestList) {
+    public Response create(@PathParam("teamId") Long teamId, @Valid List<TeamPlayedRequest> teamPlayedRequestList) {
         try {
             return Response.status(Response.Status.CREATED).entity(teamPlayedService.create_fromRequest_toDto(teamId, teamPlayedRequestList)).build();
+        } catch (CustomException exception) {
+            return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
+        }
+    }
+
+    @Path("{id}")
+    @PUT
+    public Response update(@PathParam("id") Long id, @PathParam("teamId") Long teamId, @Valid TeamPlayedRequest teamPlayedRequest) {
+        try {
+            return Response.status(Response.Status.CREATED).entity(teamPlayedService.update_fromRequest_toDto(id, teamId, teamPlayedRequest)).build();
         } catch (CustomException exception) {
             return Response.status(exception.getResponse().getStatus()).entity(exception.getMessage()).type(MediaType.TEXT_PLAIN).build();
         }
